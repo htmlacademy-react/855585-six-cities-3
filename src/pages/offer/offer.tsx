@@ -1,8 +1,19 @@
 import Header from '../../components/header/header';
+import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+
 
 function Offer(): JSX.Element {
+  const params = useParams();
+  if (params.id) {
+    // eslint-disable-next-line no-console
+    console.log(params);
+  }
   return (
     <div className="page">
+      <Helmet>
+        <title>Страница предложения</title>
+      </Helmet>
       <Header/>
       <main className="page__main page__main--offer">
         <section className="offer">
