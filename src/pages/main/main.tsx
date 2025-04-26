@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
-import Card from '../../components/card/card';
+import { Offers } from '../../types/offers';
+import CardList from '../../components/card-list/card-list';
 
 type MainProps = {
-  offersCount: number;
+  offers: Offers[];
 }
 
-function Main({offersCount}: MainProps): JSX.Element {
+function Main({offers}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -52,7 +53,7 @@ function Main({offersCount}: MainProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -69,11 +70,7 @@ function Main({offersCount}: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
+                <CardList offers={offers}/>
               </div>
             </section>
             <div className="cities__right-section">
