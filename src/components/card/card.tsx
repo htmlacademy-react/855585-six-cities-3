@@ -3,13 +3,25 @@ import { Offers } from '../../types/offers';
 
 type CardProps = {
   offers: Offers;
+  handleHover: (offer?: Offers) => void;
 }
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
-function Card({offers}: CardProps): JSX.Element {
+function Card({offers, handleHover}: CardProps): JSX.Element {
+  const handleMouseOn = () => {
+    handleHover(offers);
+  };
+
+  const handleMouseOff = () => {
+    handleHover();
+  };
   return (
-    <article className="cities__card place-card">
+    <article
+      className="cities__card place-card"
+      onMouseEnter={handleMouseOn}
+      onMouseLeave={handleMouseOff}
+    >
       {offers.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>

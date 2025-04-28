@@ -41,7 +41,7 @@ export const offers: Offers[] =
     type: 'room',
     price: 100,
     city: {
-      name: 'Paris',
+      name: 'Amsterdam',
       location: {
         latitude: 52.35514938496378,
         longitude: 4.673877537499948,
@@ -53,7 +53,7 @@ export const offers: Offers[] =
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 2,
     previewImage: 'http://picsum.photos/300/200?r=0.0762563005163318',
@@ -128,7 +128,7 @@ export const offers: Offers[] =
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: false,
+    isFavorite: true,
     isPremium: true,
     rating: 4,
     previewImage: 'http://picsum.photos/300/200?r=0.0762563005163313',
