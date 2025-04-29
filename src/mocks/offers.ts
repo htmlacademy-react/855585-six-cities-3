@@ -1,4 +1,5 @@
 import {Offers} from '../types/offers';
+import {getRandomUrl} from '../utils';
 
 export const offers: Offers[] =
 [
@@ -23,16 +24,16 @@ export const offers: Offers[] =
     isFavorite: false,
     isPremium: true,
     rating: 4,
-    previewImage: 'http://picsum.photos/300/200?r=0.0762563005163317',
+    previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Cozy room with a large window overlooking the city skyline',
     bedrooms: 105,
     goods: ['free Wi-Fi', 'private bathroom', 'room service', 'mini-bar', 'ocean view', 'king-size bed', 'complimentary breakfast', '24-hour front desk'],
     host: {
       name: 'James Hetfield',
-      avatarUrl: 'http://picsum.photos/300/200?r=0.0762563005163317',
+      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
       isPro: true,
     },
-    images: ['http://picsum.photos/300/200?r=0.0762563005163317'],
+    images: [getRandomUrl('https://cataas.com/cat?width=300&height=200&random=')],
     maxAdults: 4,
   },
   {
@@ -56,7 +57,7 @@ export const offers: Offers[] =
     isFavorite: true,
     isPremium: false,
     rating: 2,
-    previewImage: 'http://picsum.photos/300/200?r=0.0762563005163318',
+    previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Bright suite featuring a king-size bed and modern decor',
     bedrooms: 10,
     goods: ['air conditioning', 'flat-screen TV'],
@@ -66,8 +67,8 @@ export const offers: Offers[] =
       isPro: false,
     },
     images: [
-      'http://picsum.photos/300/200?r=0.0762563005163318',
-      'http://picsum.photos/300/200?r=0.0762563005163310'
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random=')
     ],
     maxAdults: 3,
   },
@@ -93,19 +94,19 @@ export const offers: Offers[] =
     isFavorite: false,
     isPremium: false,
     rating: 4,
-    previewImage: 'http://picsum.photos/300/200?r=0.0762563005163316',
+    previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Stylish room with a private balcony and ocean view',
     bedrooms: 5,
     goods: ['ocean view', 'king-size bed', 'complimentary breakfast'],
     host: {
-      name: 'ertert',
-      avatarUrl: 'http://picsum.photos/300/200?r=0.0762563005163316',
+      name: 'David Muran',
+      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
       isPro: true,
     },
     images: [
-      'http://picsum.photos/300/200?r=0.0762563005163316',
-      'http://picsum.photos/300/200?r=0.0762563005163312',
-      'http://picsum.photos/300/200?r=0.0762563005163311'
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random=')
     ],
     maxAdults: 2,
   },
@@ -131,19 +132,19 @@ export const offers: Offers[] =
     isFavorite: true,
     isPremium: true,
     rating: 4,
-    previewImage: 'http://picsum.photos/300/200?r=0.0762563005163313',
+    previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Elegant space with warm lighting and a comfortable workspace',
     bedrooms: 16,
     goods: ['ocean view', 'king-size bed', 'complimentary breakfast'],
     host: {
       name: 'Dave Mustaine',
-      avatarUrl: 'http://picsum.photos/300/200?r=0.0762563005163313',
+      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
       isPro: true,
     },
     images: [
-      'http://picsum.photos/300/200?r=0.0762563005163313',
-      'http://picsum.photos/300/200?r=0.0762563005163314',
-      'http://picsum.photos/300/200?r=0.0762563005163315',
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     ],
     maxAdults: 4,
   },
