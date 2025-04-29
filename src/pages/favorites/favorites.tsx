@@ -31,10 +31,10 @@ function Favorites({offers}: FavoriteProps): JSX.Element {
                   </div>
                   <div className="favorites__places">
                     <article className="favorites__card place-card">
-                      {(offer.isPremium) ?
+                      {offer.isPremium &&
                         <div className="place-card__mark">
                           <span>Premium</span>
-                        </div> : null}
+                        </div>}
                       <div className="favorites__image-wrapper place-card__image-wrapper">
                         <Link to="#">
                           <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place image"/>

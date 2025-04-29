@@ -37,8 +37,8 @@ function App({offers}: AppProps): JSX.Element {
             }
           />
           <Route
-            path={AppRoute.Offer}
-            element={<Offer/>}
+            path={`${AppRoute.Offer}/:id`}
+            element={<Offer authorizationStatus={AuthorizationStatus.Auth}/>}
           />
           <Route
             path='*'
