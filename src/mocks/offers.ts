@@ -21,7 +21,7 @@ export const offers: Offers[] =
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: false,
+    isFavorite: true,
     isPremium: true,
     rating: 4,
     previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
@@ -149,3 +149,5 @@ export const offers: Offers[] =
     maxAdults: 4,
   },
 ];
+
+export const favoriteOffers: Offers[] = offers.filter((item) => item.isFavorite);

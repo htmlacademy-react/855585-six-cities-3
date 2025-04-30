@@ -1,3 +1,5 @@
+export const cities = ['Amsterdam', 'New-York', 'Moscow'];
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
