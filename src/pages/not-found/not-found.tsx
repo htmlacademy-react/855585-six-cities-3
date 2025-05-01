@@ -23,9 +23,9 @@ function NotFound(): JSX.Element {
       <main className="page__main page__main--not-found">
         <div className="page__not-found-container container">
           <section className="not-found">
-            <h1 className="not-found__title">404 Not Found</h1>
+            <h1 className="not-found__title">4😿4 Not Found</h1>
             <Link className="not-found__link not-found__link--active" to={AppRoute.Main}>На главную</Link>
-            <div className="not-found__image"></div>
+            <div className="not-found__image"/>
           </section>
         </div>
       </main>

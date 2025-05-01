@@ -1,8 +1,10 @@
+export const cities = ['Amsterdam', 'New-York', 'Moscow'];
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer/:id'
+  Offer = '/offer'
 }
 
 export enum AuthorizationStatus {
