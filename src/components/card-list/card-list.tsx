@@ -1,26 +1,20 @@
-import { Nullable } from 'vitest';
-import { Offers } from '../../types/offers';
+import { Offers} from '../../types/offers';
 import Card from '../card/card';
-import { useState } from 'react';
 
 type CardListProps = {
   offers: Offers[];
+  onActiveCardChange: (offer: Offers | null) => void;
 }
 
-function CardList({offers}: CardListProps) {
-  const [, setActiveOffer] = useState<Nullable<Offers>>(null);
-
-  const handleHover = (offer?: Offers) => {
-    setActiveOffer(offer || null);
-  };
+function CardList({offers, onActiveCardChange}: CardListProps) {
 
   return (
     <div className="cities__places-list places__list tabs__content">
       {offers.map((offer) => (
         <Card
-          offers={offer}
+          offer={offer}
           key={offer.id}
-          handleHover={handleHover}
+          onActiveCardChange={() => onActiveCardChange(offer)}
         />
       ))}
     </div>

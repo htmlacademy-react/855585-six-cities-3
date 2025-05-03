@@ -7,7 +7,7 @@ import NotFound from '../../pages/not-found/not-found';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {HelmetProvider} from 'react-helmet-async';
-import { Offers } from '../../types/offers';
+import { Offers} from '../../types/offers';
 
 type AppProps = {
   offers: Offers[];

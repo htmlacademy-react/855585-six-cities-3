@@ -1,13 +1,19 @@
 import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { Offers } from '../../types/offers';
+import { Offers} from '../../types/offers';
 import CardList from '../../components/card-list/card-list';
+import Map from '../../components/map/map';
+import { useState } from 'react';
 
 type MainProps = {
   offers: Offers[];
 }
 
 function Main({offers}: MainProps): JSX.Element {
+  const [activeOffer, setActiveOffer] = useState<Offers | null>(null);
+
+  const handleActiveCardChange = (offer: Offers | null) => setActiveOffer(offer);
+
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -70,11 +76,14 @@ function Main({offers}: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <CardList offers={offers}/>
+                <CardList
+                  offers={offers}
+                  onActiveCardChange={handleActiveCardChange}
+                />
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map offers={offers} activeOffer={activeOffer}/>
             </div>
           </div>
         </div>

@@ -1,28 +1,29 @@
 import { Link } from 'react-router-dom';
-import { Offers } from '../../types/offers';
+import { Offers} from '../../types/offers';
 import { AppRoute } from '../../const';
 import { capitalize } from '../../utils';
 
 type CardProps = {
-  offers: Offers;
-  handleHover: (offer?: Offers) => void;
+  offer: Offers;
+  onActiveCardChange: (offer: Offers | null) => void;
 }
 
-function Card({offers, handleHover}: CardProps): JSX.Element {
-  const {id, isPremium, previewImage, price, title, type} = offers;
-  const handleMouseOn = () => {
-    handleHover(offers);
+function Card({offer, onActiveCardChange}: CardProps): JSX.Element {
+  const {id, isPremium, previewImage, price, title, type} = offer;
+
+  const handleCardMouseEnter = () => {
+    onActiveCardChange(offer);
   };
 
-  const handleMouseOff = () => {
-    handleHover();
+  const handleCardMouseLeave = () => {
+    onActiveCardChange(null);
   };
   return (
     <Link to={`${AppRoute.Offer}/${id}`}>
       <article
         className="cities__card place-card"
-        onMouseEnter={handleMouseOn}
-        onMouseLeave={handleMouseOff}
+        onMouseEnter={handleCardMouseEnter}
+        onMouseLeave={handleCardMouseLeave}
       >
         {isPremium &&
           <div className="place-card__mark">
