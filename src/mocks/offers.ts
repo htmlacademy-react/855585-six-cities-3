@@ -1,7 +1,7 @@
-import {Offers} from '../types/toffer';
+import {TOffer} from '../types/toffer';
 import {getRandomUrl} from '../utils';
 
-export const offers: Offers[] =
+export const offers: TOffer[] =
 [
   {
     id: '1',
@@ -150,4 +150,4 @@ export const offers: Offers[] =
   },
 ];
 
-export const favoriteOffers: Offers[] = offers.filter((item) => item.isFavorite);
+export const favoriteOffers: TOffer[] = offers.filter((item) => item.isFavorite);

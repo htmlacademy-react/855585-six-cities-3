@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { Offers } from '../../types/toffer';
+import { TOffer } from '../../types/toffer';
 
 type FavoriteCardProps = {
-  offer: Offers;
+  offer: TOffer;
 }
 
 function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {

@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Offers } from '../../types/toffer';
+import { TOffer } from '../../types/toffer';
 import FavoriteCard from '../favorite-card/favorite-card';
 import { cities } from '../../const';
 
 type FavoriteItemProps = {
   city: typeof cities[number];
-  favoriteOffers: Offers[];
+  favoriteOffers: TOffer[];
 }
 
 function FavoriteItem({city, favoriteOffers}: FavoriteItemProps): JSX.Element {

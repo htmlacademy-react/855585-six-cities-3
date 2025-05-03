@@ -1,14 +1,14 @@
-import { Offers } from '../../types/toffer';
+import { TOffer } from '../../types/toffer';
 import { cities } from '../../const';
 import FavoriteItem from '../favorite-item/favorite-item';
 
 type FavoriteListProps = {
-  favoriteOffers: Offers[];
+  favoriteOffers: TOffer[];
 };
 
 // Определяем тип через индексный синтаксис
 type OffersByCity = {
-  [city: string]: Offers[];
+  [city: string]: TOffer[];
 };
 
 function FavoriteList({favoriteOffers}: FavoriteListProps): JSX.Element {
