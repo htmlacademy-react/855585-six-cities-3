@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Offers } from '../../types/offers';
+import { Offers } from '../../types/toffer';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FavoriteList from '../../components/favorite-list/favorite-list';

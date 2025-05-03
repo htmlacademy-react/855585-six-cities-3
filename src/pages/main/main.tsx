@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { Offers} from '../../types/offers';
+import { TOffer} from '../../types/toffer';
 import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import { useState } from 'react';
 
 type MainProps = {
-  offers: Offers[];
+  offers: TOffer[];
 }
 
 function Main({offers}: MainProps): JSX.Element {
-  const [activeOffer, setActiveOffer] = useState<Offers | null>(null);
+  const [activeOffer, setActiveOffer] = useState<TOffer | null>(null);
 
-  const handleActiveCardChange = (offer: Offers | null) => setActiveOffer(offer);
+  const handleActiveCardChange = (offer: TOffer | null) => setActiveOffer(offer);
 
   return (
     <div className="page page--gray page--main">

@@ -1,4 +1,4 @@
-import {Offers} from '../types/offers';
+import {Offers} from '../types/toffer';
 import {getRandomUrl} from '../utils';
 
 export const offers: Offers[] =

@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reviews from '../../components/reviews/reviews';
 import { AuthorizationStatus } from '../../const';
+import type { TReview } from '../../types/treview';
 
 type OfferProps = {
   authorizationStatus: AuthorizationStatus;
+  reviews: TReview[];
 }
-function Offer({authorizationStatus}: OfferProps): JSX.Element {
+function Offer({authorizationStatus, reviews}: OfferProps): JSX.Element {
   const params = useParams();
   if (params.id) {
     // eslint-disable-next-line no-console
@@ -139,8 +141,8 @@ function Offer({authorizationStatus}: OfferProps): JSX.Element {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-                <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth}/>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth} reviews={reviews}/>
               </section>
             </div>
           </div>

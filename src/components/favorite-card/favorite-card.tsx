@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Offers } from '../../types/offers';
+import { Offers } from '../../types/toffer';
 
 type FavoriteCardProps = {
   offer: Offers;

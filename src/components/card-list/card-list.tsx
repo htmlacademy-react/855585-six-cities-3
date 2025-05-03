@@ -1,9 +1,9 @@
-import { Offers} from '../../types/offers';
+import { TOffer} from '../../types/toffer';
 import Card from '../card/card';
 
 type CardListProps = {
-  offers: Offers[];
-  onActiveCardChange: (offer: Offers | null) => void;
+  offers: TOffer[];
+  onActiveCardChange: (offer: TOffer | null) => void;
 }
 
 function CardList({offers, onActiveCardChange}: CardListProps) {
