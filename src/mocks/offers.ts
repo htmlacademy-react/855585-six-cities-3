@@ -1,6 +1,7 @@
 import {TOffer} from '../types/toffer';
 import {getRandomUrl} from '../utils';
 
+
 export const offers: TOffer[] =
 [
   {
@@ -26,14 +27,21 @@ export const offers: TOffer[] =
     rating: 4,
     previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Cozy room with a large window overlooking the city skyline',
-    bedrooms: 105,
-    goods: ['free Wi-Fi', 'private bathroom', 'room service', 'mini-bar', 'ocean view', 'king-size bed', 'complimentary breakfast', '24-hour front desk'],
+    bedrooms: 2,
+    goods: ['Free Wi-Fi', 'Private bathroom', 'Room service', 'Mini-bar', 'Ocean view', 'King-size bed', 'Complimentary breakfast', '24-hour front desk'],
     host: {
       name: 'James Hetfield',
-      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=300&random='),
       isPro: true,
     },
-    images: [getRandomUrl('https://cataas.com/cat?width=300&height=200&random=')],
+    images: [
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+    ],
     maxAdults: 4,
   },
   {
@@ -59,16 +67,20 @@ export const offers: TOffer[] =
     rating: 2,
     previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Bright suite featuring a king-size bed and modern decor',
-    bedrooms: 10,
-    goods: ['air conditioning', 'flat-screen TV'],
+    bedrooms: 1,
+    goods: ['Air conditioning', 'Flat-screen TV'],
     host: {
       name: 'Ozzy Osbourne',
-      avatarUrl: 'http://picsum.photos/300/200?r=0.0762563005163318',
+      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=300&random='),
       isPro: false,
     },
     images: [
       getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
-      getRandomUrl('https://cataas.com/cat?width=300&height=200&random=')
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     ],
     maxAdults: 3,
   },
@@ -96,17 +108,20 @@ export const offers: TOffer[] =
     rating: 4,
     previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Stylish room with a private balcony and ocean view',
-    bedrooms: 5,
-    goods: ['ocean view', 'king-size bed', 'complimentary breakfast'],
+    bedrooms: 4,
+    goods: ['Ocean view', 'King-size bed', 'Complimentary breakfast'],
     host: {
       name: 'David Muran',
-      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=300&random='),
       isPro: true,
     },
     images: [
       getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
       getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
-      getRandomUrl('https://cataas.com/cat?width=300&height=200&random=')
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     ],
     maxAdults: 2,
   },
@@ -134,14 +149,17 @@ export const offers: TOffer[] =
     rating: 4,
     previewImage: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
     description: 'Elegant space with warm lighting and a comfortable workspace',
-    bedrooms: 16,
-    goods: ['ocean view', 'king-size bed', 'complimentary breakfast'],
+    bedrooms: 3,
+    goods: ['Ocean view', 'King-size bed', 'Complimentary breakfast'],
     host: {
       name: 'Dave Mustaine',
-      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      avatarUrl: getRandomUrl('https://cataas.com/cat?width=300&height=300&random='),
       isPro: true,
     },
     images: [
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
+      getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
       getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
       getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),
       getRandomUrl('https://cataas.com/cat?width=300&height=200&random='),

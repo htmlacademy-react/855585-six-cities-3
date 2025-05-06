@@ -1,4 +1,5 @@
 import { TReview } from '../../types/treview';
+import { stylizesRating } from '../../utils';
 
 type ReviewProps = {
   review: TReview;
@@ -18,7 +19,7 @@ function Review({review}: ReviewProps): JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{ width: `${100 / 5 * Math.round(review.rating)}%` }}></span>
+            <span style={{ width: stylizesRating(review.rating) }}></span>
             <span className="visually-hidden">{review.rating}</span>
           </div>
         </div>

@@ -14,6 +14,7 @@ function CardList({offers, onActiveCardChange}: CardListProps) {
         <Card
           offer={offer}
           key={offer.id}
+          block="cities"
           onActiveCardChange={() => onActiveCardChange(offer)}
         />
       ))}

@@ -41,7 +41,7 @@ function App({offers, favoriteOffers, reviews}: AppProps): JSX.Element {
           />
           <Route
             path={`${AppRoute.Offer}/:id`}
-            element={<Offer authorizationStatus={AuthorizationStatus.Auth} reviews={reviews}/>}
+            element={<Offer authorizationStatus={AuthorizationStatus.Auth} offers={offers} reviews={reviews}/>}
           />
           <Route
             path='*'

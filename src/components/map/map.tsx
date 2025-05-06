@@ -6,11 +6,12 @@ import {useMap} from './useMap.ts';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const.ts';
 
 type MapProps = {
+  className?: string;
   offers: TOffer[];
-  activeOffer: TOffer | null;
+  activeOffer?: TOffer | null;
 }
 
-function Map({offers, activeOffer}: MapProps): JSX.Element {
+function Map({className, offers, activeOffer}: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const city = offers.length > 0 ? offers[0].city : null; // берем первую точку как "город"
   const map = useMap(mapRef, city);
@@ -46,7 +47,7 @@ function Map({offers, activeOffer}: MapProps): JSX.Element {
 
   return(
     <section
-      className="cities__map map"
+      className={`map ${className}`}
       ref={mapRef}
     >
     </section>

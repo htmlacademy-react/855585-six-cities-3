@@ -83,7 +83,7 @@ function Main({offers}: MainProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <Map offers={offers} activeOffer={activeOffer}/>
+              <Map className="cities__map" offers={offers} activeOffer={activeOffer}/>
             </div>
           </div>
         </div>
