@@ -7,14 +7,16 @@ import NotFound from '../../pages/not-found/not-found';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {HelmetProvider} from 'react-helmet-async';
-import { Offers } from '../../types/offers';
+import {TOffer} from '../../types/toffer';
+import {TReview} from '../../types/treview';
 
 type AppProps = {
-  offers: Offers[];
-  favoriteOffers: Offers[];
+  offers: TOffer[];
+  favoriteOffers: TOffer[];
+  reviews: TReview[];
 }
 
-function App({offers, favoriteOffers}: AppProps): JSX.Element {
+function App({offers, favoriteOffers, reviews}: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -39,7 +41,7 @@ function App({offers, favoriteOffers}: AppProps): JSX.Element {
           />
           <Route
             path={`${AppRoute.Offer}/:id`}
-            element={<Offer authorizationStatus={AuthorizationStatus.Auth}/>}
+            element={<Offer authorizationStatus={AuthorizationStatus.Auth} offers={offers} reviews={reviews}/>}
           />
           <Route
             path='*'

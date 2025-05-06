@@ -1,3 +1,6 @@
+import markerIcon from './components/map/assets/pin.svg';
+import activeMarkerIcon from './components/map/assets/pin-active.svg';
+
 export const cities = ['Amsterdam', 'New-York', 'Moscow'];
 
 export enum AppRoute {
@@ -12,3 +15,8 @@ export enum AuthorizationStatus {
   NoAuth = 'NO AUTH',
   Unknown = 'UNKNOWN',
 }
+
+const URL_MARKER_DEFAULT = markerIcon;
+const URL_MARKER_CURRENT = activeMarkerIcon;
+
+export {URL_MARKER_DEFAULT, URL_MARKER_CURRENT};

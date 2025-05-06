@@ -1,34 +1,36 @@
 import { Link } from 'react-router-dom';
-import { Offers } from '../../types/offers';
+import { TOffer} from '../../types/toffer';
 import { AppRoute } from '../../const';
 import { capitalize } from '../../utils';
 
 type CardProps = {
-  offers: Offers;
-  handleHover: (offer?: Offers) => void;
+  offer: TOffer;
+  block: string;
+  onActiveCardChange?: (offer: TOffer | null) => void;
 }
 
-function Card({offers, handleHover}: CardProps): JSX.Element {
-  const {id, isPremium, previewImage, price, title, type} = offers;
-  const handleMouseOn = () => {
-    handleHover(offers);
+function Card({offer, block, onActiveCardChange}: CardProps): JSX.Element {
+  const {id, isPremium, previewImage, price, title, type} = offer;
+
+  const handleCardMouseEnter = () => {
+    onActiveCardChange?.(offer);
   };
 
-  const handleMouseOff = () => {
-    handleHover();
+  const handleCardMouseLeave = () => {
+    onActiveCardChange?.(null);
   };
   return (
     <Link to={`${AppRoute.Offer}/${id}`}>
       <article
-        className="cities__card place-card"
-        onMouseEnter={handleMouseOn}
-        onMouseLeave={handleMouseOff}
+        className={`${block}__card place-card`}
+        onMouseEnter={handleCardMouseEnter}
+        onMouseLeave={handleCardMouseLeave}
       >
         {isPremium &&
           <div className="place-card__mark">
             <span>Premium</span>
           </div>}
-        <div className="cities__image-wrapper place-card__image-wrapper">
+        <div className={`${block}__image-wrapper place-card__image-wrapper`}>
           <img className="place-card__image" src={previewImage}/>
         </div>
         <div className="place-card__info">
