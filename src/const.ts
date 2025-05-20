@@ -1,7 +1,7 @@
 import markerIcon from './components/map/assets/pin.svg';
 import activeMarkerIcon from './components/map/assets/pin-active.svg';
 
-export const cities = ['Amsterdam', 'New-York', 'Moscow'];
+export const cities = ['Paris', 'Amsterdam', 'Cologne'];
 
 export enum AppRoute {
   Main = '/',

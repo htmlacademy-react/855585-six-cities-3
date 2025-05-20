@@ -50,7 +50,7 @@ export const offers: TOffer[] =
     type: 'room',
     price: 100,
     city: {
-      name: 'Amsterdam',
+      name: 'Paris',
       location: {
         latitude: 52.3609553943508,
         longitude: 4.85309666406198,
@@ -91,7 +91,7 @@ export const offers: TOffer[] =
     type: 'apartment',
     price: 200,
     city: {
-      name: 'Amsterdam',
+      name: 'Cologne',
       location: {
         latitude: 52.3909553943508,
         longitude: 4.929309666406198,
