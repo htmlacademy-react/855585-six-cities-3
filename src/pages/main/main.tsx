@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
 import { TOffer} from '../../types/toffer';
 import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import { useState } from 'react';
+import LocationsList from '../../components/locations-list/locations-list';
 
 type MainProps = {
   offers: TOffer[];
@@ -11,8 +11,15 @@ type MainProps = {
 
 function Main({offers}: MainProps): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | null>(null);
+  const [activeCity, setActiveCity] = useState<string | null>('Paris');
+
+  const filtredOffers = offers.filter((offer) => offer.city.name === activeCity);
 
   const handleActiveCardChange = (offer: TOffer | null) => setActiveOffer(offer);
+  const handleActiveTabsChange = (city: string) => {
+    setActiveCity(city);
+  };
+
 
   return (
     <div className="page page--gray page--main">
@@ -21,45 +28,14 @@ function Main({offers}: MainProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Paris</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Cologne</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Brussels</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item tabs__item--active" to={''}>
-                  <span>Amsterdam</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Hamburg</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Dusseldorf</span>
-                </Link>
-              </li>
-            </ul>
+            <LocationsList activeCity={activeCity} onCityClick={handleActiveTabsChange}/>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{filtredOffers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -77,13 +53,13 @@ function Main({offers}: MainProps): JSX.Element {
               </form>
               <div className="cities__places-list places__list tabs__content">
                 <CardList
-                  offers={offers}
+                  offers={filtredOffers}
                   onActiveCardChange={handleActiveCardChange}
                 />
               </div>
             </section>
             <div className="cities__right-section">
-              <Map className="cities__map" offers={offers} activeOffer={activeOffer}/>
+              <Map className="cities__map" offers={filtredOffers} activeOffer={activeOffer}/>
             </div>
           </div>
         </div>
