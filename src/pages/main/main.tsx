@@ -13,7 +13,7 @@ function Main({offers}: MainProps): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | null>(null);
   const [activeCity, setActiveCity] = useState<string | null>('Paris');
 
-  const filtredOffers = offers.filter((offer) => offer.city.name === activeCity);
+  const filteredOffers = offers.filter((offer) => offer.city.name === activeCity);
 
   const handleActiveCardChange = (offer: TOffer | null) => setActiveOffer(offer);
   const handleActiveTabsChange = (city: string) => {
@@ -35,7 +35,7 @@ function Main({offers}: MainProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{filtredOffers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{filteredOffers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -53,13 +53,13 @@ function Main({offers}: MainProps): JSX.Element {
               </form>
               <div className="cities__places-list places__list tabs__content">
                 <CardList
-                  offers={filtredOffers}
+                  offers={filteredOffers}
                   onActiveCardChange={handleActiveCardChange}
                 />
               </div>
             </section>
             <div className="cities__right-section">
-              <Map className="cities__map" offers={filtredOffers} activeOffer={activeOffer}/>
+              <Map className="cities__map" offers={filteredOffers} activeOffer={activeOffer}/>
             </div>
           </div>
         </div>

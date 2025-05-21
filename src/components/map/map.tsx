@@ -1,8 +1,8 @@
-import {useRef, useEffect} from 'react';
+import { useRef, useEffect } from 'react';
 import { TOffer } from '../../types/toffer.ts';
-import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {useMap} from './useMap.ts';
+import { useMap } from './useMap.ts';
+import leaflet, { LayerGroup } from 'leaflet';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const.ts';
 
 type MapProps = {
@@ -11,46 +11,67 @@ type MapProps = {
   activeOffer?: TOffer | null;
 }
 
-function Map({className, offers, activeOffer}: MapProps): JSX.Element {
+const defaultCustomIcon = leaflet.icon({
+  iconUrl: URL_MARKER_DEFAULT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+const currentCustomIcon = leaflet.icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+function Map({ className, offers, activeOffer }: MapProps): JSX.Element {
   const mapRef = useRef(null);
-  const city = offers.length > 0 ? offers[0].city : null; // берем первую точку как "город"
+  const city = offers.length > 0 ? offers[0].city : null;
   const map = useMap(mapRef, city);
+  const markerLayer = useRef<LayerGroup>(leaflet.layerGroup());
 
-  const defaultCustomIcon = leaflet.icon({
-    iconUrl: URL_MARKER_DEFAULT,
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-
-  const currentCustomIcon = leaflet.icon({
-    iconUrl: URL_MARKER_CURRENT,
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-
+  // Добавляем слой маркеров в карту (один раз)
   useEffect(() => {
     if (map) {
+      markerLayer.current.addTo(map);
+    }
+  }, [map]);
+
+  // Обновляем центр карты при смене города
+  useEffect(() => {
+    if (map && city) {
+      map.setView(
+        [city.location.latitude, city.location.longitude],
+        city.location.zoom
+      );
+    }
+  }, [map, city]);
+
+  // Обновляем маркеры
+  useEffect(() => {
+    if (map) {
+      markerLayer.current.clearLayers();
+
       offers.forEach((offer) => {
         leaflet
-          .marker({//1м параметром принимает объект с координатами точки, куда нужно поставить маркер
-            lat: offer.city.location.latitude,
-            lng: offer.city.location.longitude,
+          .marker({
+            lat: offer.location.latitude,
+            lng: offer.location.longitude,
           }, {
-            icon: (offer.id === activeOffer?.id)
+            icon: offer.id === activeOffer?.id
               ? currentCustomIcon
-              : defaultCustomIcon,// 2й параметр — опциональный, для указания вида маркера (пропустим - маркер будет стандарной иконкой).
+              : defaultCustomIcon,
           })
-          .addTo(map);//указывает на какую карту добавить маркер
+          .addTo(markerLayer.current);
       });
     }
-  }, [activeOffer, map, offers]);
+  }, [map, offers, activeOffer]);
 
-  return(
+  return (
     <section
-      className={`map ${className}`}
+      className={`map ${className ?? ''}`}
       ref={mapRef}
-    >
-    </section>
+    />
   );
 }
+
 export default Map;
