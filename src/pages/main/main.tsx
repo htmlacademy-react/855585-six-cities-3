@@ -4,22 +4,14 @@ import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import { useState } from 'react';
 import LocationsList from '../../components/locations-list/locations-list';
+import { useAppSelector } from '../../store';
 
-type MainProps = {
-  offers: TOffer[];
-}
-
-function Main({offers}: MainProps): JSX.Element {
+function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | null>(null);
-  const [activeCity, setActiveCity] = useState<string | null>('Paris');
-
-  const filteredOffers = offers.filter((offer) => offer.city.name === activeCity);
-
   const handleActiveCardChange = (offer: TOffer | null) => setActiveOffer(offer);
-  const handleActiveTabsChange = (city: string) => {
-    setActiveCity(city);
-  };
 
+  const activeCity = useAppSelector((state) => state.city);
+  const filteredOffers = useAppSelector((state) => state.offers).filter((offer) => offer.city.name === activeCity);
 
   return (
     <div className="page page--gray page--main">
@@ -28,14 +20,14 @@ function Main({offers}: MainProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <LocationsList activeCity={activeCity} onCityClick={handleActiveTabsChange}/>
+            <LocationsList activeCity={activeCity}/>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{filteredOffers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{filteredOffers.length} places to stay in {activeCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
