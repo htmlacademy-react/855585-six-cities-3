@@ -2,6 +2,7 @@ import markerIcon from './components/map/assets/pin.svg';
 import activeMarkerIcon from './components/map/assets/pin-active.svg';
 
 export const locationNames = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+export const sortingValues = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
 
 export const cities = ['Paris', 'Amsterdam', 'Cologne'];
 
