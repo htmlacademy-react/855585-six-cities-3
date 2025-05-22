@@ -9,14 +9,15 @@ import PrivateRoute from '../private-route/private-route';
 import {HelmetProvider} from 'react-helmet-async';
 import {TOffer} from '../../types/toffer';
 import {TReview} from '../../types/treview';
+import { useAppSelector } from '../../store';
 
 type AppProps = {
-  offers: TOffer[];
   favoriteOffers: TOffer[];
   reviews: TReview[];
 }
 
-function App({offers, favoriteOffers, reviews}: AppProps): JSX.Element {
+function App({favoriteOffers, reviews}: AppProps): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   return (
     <HelmetProvider>
       <BrowserRouter>

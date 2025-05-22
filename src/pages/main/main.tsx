@@ -6,30 +6,19 @@ import { useState } from 'react';
 import LocationsList from '../../components/locations-list/locations-list';
 import { useAppSelector } from '../../store';
 import SortingOptions from '../../components/ sorting-options/ sorting-options';
-import { sortingValues } from '../../const';
+import { sortingValues} from '../../const';
+import { selectActiveCity,selectOffers } from '../../store/selectors';
+import { getFilteredOffers } from './utils';
 
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | null>(null);
   const handleActiveCardChange = (offer: TOffer | null) => setActiveOffer(offer);
-  const [sortValue, setSortValue] = useState<string>(sortingValues[0]);
+  const [sortValue, setSortValue] = useState<string>(sortingValues.popular);
 
 
-  const activeCity = useAppSelector((state) => state.city);
-  let filteredOffers = useAppSelector((state) => state.offers).filter((offer) => offer.city.name === activeCity);
-  const offersByPriceLowToHigh = filteredOffers.slice().sort((a, b) => a.price - b.price);
-  const offersByPriceHighToLow = filteredOffers.slice().sort((a, b) => b.price - a.price);
-  const offersByRated = filteredOffers.slice().sort((a, b) => b.rating - a.rating);
-
-  switch(sortValue) {
-    case sortingValues[1]: filteredOffers = offersByPriceLowToHigh;
-      break;
-    case sortingValues[2]: filteredOffers = offersByPriceHighToLow;
-      break;
-    case sortingValues[3]: filteredOffers = offersByRated;
-      break;
-    default:
-      break;
-  }
+  const activeCity = useAppSelector(selectActiveCity);
+  const filteredOffers = getFilteredOffers(useAppSelector(selectOffers)
+    .filter((offer) => offer.city.name === activeCity), sortValue);
 
   return (
     <div className="page page--gray page--main">

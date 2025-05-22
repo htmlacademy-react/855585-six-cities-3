@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { locationNames } from '../../const';
+import { cities } from '../../const';
 import { useAppDispatch } from '../../store';
 import { setCity } from '../../store/actions';
 
@@ -10,15 +10,19 @@ type LocationsListProps = {
 function LocationsList({activeCity}: LocationsListProps) {
   const dispatch = useAppDispatch();
 
+  function handleCityClick(city: string) {
+    dispatch(setCity(city));
+  }
+
   return (
     <ul className="locations__list tabs__list">
-      {locationNames.map((locationName) => (
-        <li key={locationName}
+      {cities.map((city) => (
+        <li key={city}
           className="locations__item"
-          onClick={() => dispatch(setCity(locationName))}
+          onClick={() => handleCityClick(city)}
         >
-          <Link className={`locations__item-link tabs__item ${locationName === activeCity ? 'tabs__item--active' : ''}`} to="#">
-            <span>{locationName}</span>
+          <Link className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`} to="#">
+            <span>{city}</span>
           </Link>
         </li>
       ))}
