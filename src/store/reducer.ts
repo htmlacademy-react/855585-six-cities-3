@@ -1,12 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus, cities } from '../const';
-import { offers } from '../mocks/offers';
 import { OffersState } from '../types/store';
 import { setCity, initOffers, loadOffers, requireAuthorization } from './actions';
 
 const initialState: OffersState = {
   city: cities[0],
-  offers,
+  offers: [],
   authorizationStatus: AuthorizationStatus.Unknown,
 };
 
