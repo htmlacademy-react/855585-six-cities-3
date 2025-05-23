@@ -4,6 +4,7 @@ import type {store} from '../store';
 export type OffersState = {
   city: string;
   offers: TOffer[];
+  authorizationStatus: string;
 }
 //автоматически выводит тип всего состояния (state), которое хранится в Redux-хранилище (store).
 export type RootState = ReturnType<typeof store.getState>;

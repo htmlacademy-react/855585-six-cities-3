@@ -1,12 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { cities } from '../const';
+import { AuthorizationStatus, cities } from '../const';
 import { offers } from '../mocks/offers';
 import { OffersState } from '../types/store';
-import { setCity, initOffers } from './actions';
+import { setCity, initOffers, loadOffers, requireAuthorization } from './actions';
 
 const initialState: OffersState = {
   city: cities[0],
   offers,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 //createReducer заменяет switch-редьюсер. builder.addCase позволяет указывать, как состояние меняется при каждом экшене.
@@ -18,6 +19,12 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(initOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 
