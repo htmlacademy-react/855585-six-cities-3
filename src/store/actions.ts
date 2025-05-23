@@ -8,3 +8,4 @@ export const setCity = createAction<string>('offers/setCity');
 export const initOffers = createAction<TOffer[]>('offers/initOffers');
 export const loadOffers = createAction<TOffer[]>('data/loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+export const setError = createAction<string | null>('offers/setError');
