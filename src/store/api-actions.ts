@@ -2,12 +2,22 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, OffersState} from '../types/store';
 import {TOffer} from '../types/toffer';
-import {loadOffers, requireAuthorization} from './actions';
+import {loadOffers, requireAuthorization, setError} from './actions';
 import {saveToken, dropToken} from '../services/token';
-import {APIRoute, AuthorizationStatus} from '../const';
+import {APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR} from '../const';
 import { AuthData } from '../types/auth-data';
 import {UserData} from '../types/user-data';
+import { store } from './';
 
+export const clearErrorAction = createAsyncThunk(
+  'app/clearError',
+  () => {
+    setTimeout(
+      () => store.dispatch(setError(null)),
+      TIMEOUT_SHOW_ERROR
+    );
+  }
+);
 
 //Действие которое отправляет GET-запрос, создаем новый AsyncThunk
 export const fetchQuestionAction = createAsyncThunk<

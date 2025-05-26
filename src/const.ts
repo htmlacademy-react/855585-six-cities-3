@@ -34,3 +34,5 @@ const URL_MARKER_DEFAULT = markerIcon;
 const URL_MARKER_CURRENT = activeMarkerIcon;
 
 export {URL_MARKER_DEFAULT, URL_MARKER_CURRENT};
+
+export const TIMEOUT_SHOW_ERROR = 2000;
