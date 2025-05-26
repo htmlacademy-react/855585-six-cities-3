@@ -9,3 +9,4 @@ export const initOffers = createAction<TOffer[]>('app/initOffers');
 export const loadOffers = createAction<TOffer[]>('data/loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 export const setError = createAction<string | null>('app/setError');
+export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');

@@ -7,6 +7,7 @@ export type OffersState = {
   city: string;
   offers: TOffer[];
   authorizationStatus: AuthorizationStatus;
+  isOffersDataLoading: boolean;
   error: string | null;
 }
 //автоматически выводит тип всего состояния (state), которое хранится в Redux-хранилище (store).

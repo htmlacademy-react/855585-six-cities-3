@@ -2,7 +2,7 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, OffersState} from '../types/store';
 import {TOffer} from '../types/toffer';
-import {loadOffers, requireAuthorization, setError} from './actions';
+import {loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus} from './actions';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR} from '../const';
 import { AuthData } from '../types/auth-data';
@@ -20,7 +20,7 @@ export const clearErrorAction = createAsyncThunk(
 );
 
 //Действие которое отправляет GET-запрос, создаем новый AsyncThunk
-export const fetchQuestionAction = createAsyncThunk<
+export const fetchOffersAction = createAsyncThunk<
   void,//Тип возвращаемого значения (ничего не возвращает — void)
   undefined,//Тип аргумента, который принимает (в этом случае — ничего)
   {
@@ -34,8 +34,10 @@ export const fetchQuestionAction = createAsyncThunk<
   //Сам асинхронный thunk
   async (_arg, { dispatch, extra: api }) => {//_arg = undefined + извлекаем из объекта эл-ты для
     //асинхронной операции
+    dispatch(setOffersDataLoadingStatus(true));
     //Делаем GET-запрос к API, чтобы получить список предложений (offers)
     const { data } = await api.get<TOffer[]>(APIRoute.Offers);
+    dispatch(setOffersDataLoadingStatus(false));
     //После успешного получения данных отправляем их в store с помощью экшена
     dispatch(loadOffers(data));
   }

@@ -10,6 +10,8 @@ import {HelmetProvider} from 'react-helmet-async';
 // import {TOffer} from '../../types/toffer';
 import {TReview} from '../../types/treview';
 import { useAppSelector } from '../../store';
+import LoadingScreen from '../loading-screen/loading-screen';
+
 
 type AppProps = {
   // favoriteOffers: TOffer[];
@@ -18,6 +20,14 @@ type AppProps = {
 
 function App({reviews}: AppProps): JSX.Element {//favoriteOffers,
   const offers = useAppSelector((state) => state.offers);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -42,7 +52,12 @@ function App({reviews}: AppProps): JSX.Element {//favoriteOffers,
           />
           <Route
             path={`${AppRoute.Offer}/:id`}
-            element={<Offer authorizationStatus={AuthorizationStatus.Auth} offers={offers} reviews={reviews}/>}
+            element={
+              <Offer authorizationStatus={AuthorizationStatus.Auth}
+                offers={offers}
+                reviews={reviews}
+              />
+            }
           />
           <Route
             path='*'
