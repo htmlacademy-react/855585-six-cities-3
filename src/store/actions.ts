@@ -4,8 +4,8 @@ import { AuthorizationStatus } from '../const';
 
 //передаём тип payload (<string>, <TOffer[]>) прямо в createAction,
 // RTK сам создаёт объект экшена и его типизацию
-export const setCity = createAction<string>('offers/setCity');
-export const initOffers = createAction<TOffer[]>('offers/initOffers');
+export const setCity = createAction<string>('app/setCity');
+export const initOffers = createAction<TOffer[]>('app/initOffers');
 export const loadOffers = createAction<TOffer[]>('data/loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
-export const setError = createAction<string | null>('offers/setError');
+export const setError = createAction<string | null>('app/setError');

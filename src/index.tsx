@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
-import {favoriteOffers} from './mocks/offers';
+// import {favoriteOffers} from './mocks/offers';
 import {reviews} from './mocks/reviews';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import ErrorMessage from './components/error-message/error-message';
+import {checkAuthAction} from './store/api-actions';
+
+store.dispatch(checkAuthAction());
 
 
 const root = ReactDOM.createRoot(
@@ -17,7 +20,7 @@ root.render(
     <Provider store={store}>
       <ErrorMessage />
       <App
-        favoriteOffers={favoriteOffers}
+        // favoriteOffers={favoriteOffers}
         reviews={reviews}
       />
     </Provider>

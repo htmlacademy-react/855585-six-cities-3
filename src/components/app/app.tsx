@@ -7,16 +7,16 @@ import NotFound from '../../pages/not-found/not-found';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {HelmetProvider} from 'react-helmet-async';
-import {TOffer} from '../../types/toffer';
+// import {TOffer} from '../../types/toffer';
 import {TReview} from '../../types/treview';
 import { useAppSelector } from '../../store';
 
 type AppProps = {
-  favoriteOffers: TOffer[];
+  // favoriteOffers: TOffer[];
   reviews: TReview[];
 }
 
-function App({favoriteOffers, reviews}: AppProps): JSX.Element {
+function App({reviews}: AppProps): JSX.Element {//favoriteOffers,
   const offers = useAppSelector((state) => state.offers);
   return (
     <HelmetProvider>
@@ -36,7 +36,7 @@ function App({favoriteOffers, reviews}: AppProps): JSX.Element {
               <PrivateRoute
                 authorizationStatus={AuthorizationStatus.Auth}
               >
-                <Favorites favoriteOffers={favoriteOffers}/>
+                <Favorites/>
               </PrivateRoute>
             }
           />
