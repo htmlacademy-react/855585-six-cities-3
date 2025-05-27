@@ -3,6 +3,7 @@ import { reducer } from './reducer';
 import {RootState, AppDispatch} from '../types/store';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import { createAPI } from '../services/api';
+import {redirect} from './middlewares/redirect';
 
 //Создадим экземпляр api
 export const api = createAPI();
@@ -15,7 +16,7 @@ export const store = configureStore({
       thunk: {
         extraArgument: api,//доп аргумент досутпный в асинх-х действяих.
       }
-    })
+    }).concat(redirect),//добавляем массив с нашим middleware
 });
 
 //не сможем диспачнуть действие которое не создавали

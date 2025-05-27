@@ -2,9 +2,9 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, OffersState} from '../types/store';
 import {TOffer} from '../types/toffer';
-import {loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus} from './actions';
+import {loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, redirectToRoute} from './actions';
 import {saveToken, dropToken} from '../services/token';
-import {APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR} from '../const';
+import {APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute} from '../const';
 import { AuthData } from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import { store } from './';
@@ -83,6 +83,8 @@ export const loginAction = createAsyncThunk<
 
     //Обновляем статус авторизации в хранилище на "Auth"
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+
+    dispatch(redirectToRoute(AppRoute.Main));
   },
 );
 

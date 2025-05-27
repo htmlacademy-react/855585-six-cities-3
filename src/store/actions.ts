@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { TOffer } from '../types/toffer';
-import { AuthorizationStatus } from '../const';
+import { AuthorizationStatus, AppRoute } from '../const';
 
 //передаём тип payload (<string>, <TOffer[]>) прямо в createAction,
 // RTK сам создаёт объект экшена и его типизацию
@@ -10,3 +10,4 @@ export const loadOffers = createAction<TOffer[]>('data/loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 export const setError = createAction<string | null>('app/setError');
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
+export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');
