@@ -1,12 +1,12 @@
-import {AxiosInstance} from 'axios';
-import {createAsyncThunk} from '@reduxjs/toolkit';
-import {AppDispatch, OffersState} from '../types/store';
-import {TOffer} from '../types/toffer';
-import {loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, redirectToRoute} from './actions';
-import {saveToken, dropToken} from '../services/token';
-import {APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute} from '../const';
+import { AxiosInstance } from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AppDispatch, OffersState } from '../types/store';
+import { TOffer } from '../types/toffer';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, redirectToRoute, setUserEmail } from './actions';
+import { saveToken, dropToken } from '../services/token';
+import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute } from '../const';
 import { AuthData } from '../types/auth-data';
-import {UserData} from '../types/user-data';
+import { UserData } from '../types/user-data';
 import { store } from './';
 
 export const clearErrorAction = createAsyncThunk(
@@ -51,7 +51,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, { dispatch, extra: api }) => {
     try {
       await api.get(APIRoute.Login);// Пытаемся получить данные по маршруту /login
       dispatch(requireAuthorization(AuthorizationStatus.Auth));//Cтатус "авторизован"
@@ -74,16 +74,16 @@ export const loginAction = createAsyncThunk<
   'user/login',
 
 
-  async ({login: email, password}, {dispatch, extra: api}) => {
+  async ({ login: email, password }, { dispatch, extra: api }) => {
     //Отправляем POST-запрос на эндпоинт логина с email и паролем
-    const { data: { token } } = await api.post<UserData>(APIRoute.Login, { email, password });
+    const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
 
-    //Сохраняем полученный токен в localStorage (для последующих запросов)
-    saveToken(token);
+    // Сохраняем токен
+    saveToken(data.token);
 
-    //Обновляем статус авторизации в хранилище на "Auth"
+    // Обновляем состояние
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
-
+    dispatch(setUserEmail(data.email));
     dispatch(redirectToRoute(AppRoute.Main));
   },
 );
@@ -99,7 +99,7 @@ export const logoutAction = createAsyncThunk<
   }
 >(
   'user/logout',// Уникальный идентификатор действия (используется для генерации типов и логов)
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, { dispatch, extra: api }) => {
     // Отправляем DELETE-запрос на сервер, чтобы завершить сессию пользователя
     await api.delete(APIRoute.Logout);
 

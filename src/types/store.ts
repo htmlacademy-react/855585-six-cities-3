@@ -9,6 +9,7 @@ export type OffersState = {
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
   error: string | null;
+  email: string | null;
 }
 //автоматически выводит тип всего состояния (state), которое хранится в Redux-хранилище (store).
 export type RootState = ReturnType<typeof store.getState>;
