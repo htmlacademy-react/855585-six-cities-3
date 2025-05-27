@@ -1,4 +1,4 @@
-import {Route, Routes, BrowserRouter} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import Main from '../../pages/main/main';
 import Login from '../../pages/login/login';
 import Favorites from '../../pages/favorites/favorites';
@@ -11,7 +11,8 @@ import {HelmetProvider} from 'react-helmet-async';
 import {TReview} from '../../types/treview';
 import { useAppSelector } from '../../store';
 import LoadingScreen from '../loading-screen/loading-screen';
-
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 type AppProps = {
   // favoriteOffers: TOffer[];
@@ -30,7 +31,7 @@ function App({reviews}: AppProps): JSX.Element {//favoriteOffers,
   }
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route
             path={AppRoute.Main}
@@ -64,7 +65,7 @@ function App({reviews}: AppProps): JSX.Element {//favoriteOffers,
             element={<NotFound/>}
           />
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
