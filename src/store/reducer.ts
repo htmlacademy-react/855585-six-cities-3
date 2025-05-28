@@ -1,40 +1,16 @@
-// import { cities } from '../const';
-// import { offers } from '../mocks/offers';
-// import {OffersState, AppAction, SET_CITY, SET_OFFERS} from '../types/store';
-
-// const initialState: OffersState = {
-//   city: cities[0],
-//   offers
-// };
-
-// export function reducer(state: OffersState = initialState, action: AppAction): OffersState {
-//   switch (action.type) {
-//     case SET_CITY:
-//       return {
-//         ...state,
-//         city: action.payload
-//       };
-//     case SET_OFFERS:
-//       return {
-//         ...state,
-//         offers: action.payload
-//       };
-//     default:
-//       return state;
-//   }
-// }
-
 import { createReducer } from '@reduxjs/toolkit';
-import { cities } from '../const';
-import { offers } from '../mocks/offers';
+import { AuthorizationStatus, cities } from '../const';
 import { OffersState } from '../types/store';
-import { setCity, setOffers } from './actions';
+import { setCity, initOffers, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus,setUserEmail } from './actions';
 
 const initialState: OffersState = {
   city: cities[0],
-  offers,
+  offers: [],
+  authorizationStatus: AuthorizationStatus.Unknown,
+  isOffersDataLoading: false,
+  error: null,
+  email: null,
 };
-
 
 //createReducer заменяет switch-редьюсер. builder.addCase позволяет указывать, как состояние меняется при каждом экшене.
 //Можно мутабельно менять state, благодаря immer (встроен в RTK).
@@ -43,8 +19,23 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(setCity, (state, action) => {
       state.city = action.payload;
     })
-    .addCase(setOffers, (state, action) => {
+    .addCase(initOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setUserEmail, (state, action) => {
+      state.email = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 

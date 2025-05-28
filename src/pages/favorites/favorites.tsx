@@ -1,15 +1,15 @@
 import { Helmet } from 'react-helmet-async';
-import { TOffer } from '../../types/toffer';
+// import { TOffer } from '../../types/toffer';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FavoriteList from '../../components/favorite-list/favorite-list';
 
 
-type FavoriteProps = {
-  favoriteOffers: TOffer[];
-}
+// type FavoriteProps = {
+//   favoriteOffers: TOffer[];
+// }
 
-function Favorites({favoriteOffers}: FavoriteProps): JSX.Element {
+function Favorites(): JSX.Element {
   return (
     <div className="page">
       <Helmet>
@@ -20,7 +20,7 @@ function Favorites({favoriteOffers}: FavoriteProps): JSX.Element {
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoriteList favoriteOffers={favoriteOffers}/>
+            <FavoriteList/>
           </section>
         </div>
       </main>

@@ -1,5 +1,4 @@
 import { sortingValues } from '../../const';
-// import { TOffer } from '../../types/toffer';
 
 type SortingOptionsProps = {
   sortValue: string;
@@ -18,7 +17,7 @@ function SortingOptions({ sortValue, onSortClick}: SortingOptionsProps): JSX.Ele
         </svg>
       </span>
       <ul className="places__options places__options--custom places__options--opened">
-        {sortingValues.map((value) => (
+        {Object.values(sortingValues).map((value) => (
           <li
             key={value}
             className={`places__option ${value === sortValue ? 'places__option--active' : ''}`}
