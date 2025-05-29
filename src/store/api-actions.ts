@@ -32,14 +32,17 @@ export const fetchOffersAction = createAsyncThunk<
   'data/fetchOffers',//Имя экшена (префикс в типах 'data/fetchOffers', 'fulfilled', 'rejected')
 
   //Сам асинхронный thunk
-  async (_arg, { dispatch, extra: api }) => {//_arg = undefined + извлекаем из объекта эл-ты для
-    //асинхронной операции
-    dispatch(setOffersDataLoadingStatus(true));
-    //Делаем GET-запрос к API, чтобы получить список предложений (offers)
-    const { data } = await api.get<TOffer[]>(APIRoute.Offers);
-    dispatch(setOffersDataLoadingStatus(false));
-    //После успешного получения данных отправляем их в store с помощью экшена
-    dispatch(loadOffers(data));
+  async (_arg, { dispatch, extra: api }) => {//_arg = undefined + извлекаем из объекта эл-ты для ас-й операции
+    try {
+      dispatch(setOffersDataLoadingStatus(true));
+      //Делаем GET-запрос к API, чтобы получить список предложений (offers)
+      const { data } = await api.get<TOffer[]>(APIRoute.Offers);
+      dispatch(setOffersDataLoadingStatus(false));
+      //После успешного получения данных отправляем их в store с помощью экшена
+      dispatch(loadOffers(data));
+    } catch(error) {
+      dispatch(setError('Не удалось загрузить данные'));
+    }
   }
 );
 
@@ -75,16 +78,25 @@ export const loginAction = createAsyncThunk<
 
 
   async ({ login: email, password }, { dispatch, extra: api }) => {
-    //Отправляем POST-запрос на эндпоинт логина с email и паролем
-    const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
+    try {
+      //Отправляем POST-запрос на эндпоинт логина с email и паролем
+      const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
 
-    // Сохраняем токен
-    saveToken(data.token);
+      // Сохраняем токен
+      saveToken(data.token);
 
-    // Обновляем состояние
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(setUserEmail(data.email));
-    dispatch(redirectToRoute(AppRoute.Main));
+      // Обновляем состояние
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(setUserEmail(data.email));
+      dispatch(redirectToRoute(AppRoute.Main));
+    } catch (error) {
+      // Отправляем ошибку в Redux-хранилище
+      dispatch(setError('Неверный логин или пароль.'));
+
+      // Через несколько секунд очищаем сообщение об ошибке
+      setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
+      throw error;
+    }
   },
 );
 
@@ -100,14 +112,18 @@ export const logoutAction = createAsyncThunk<
 >(
   'user/logout',// Уникальный идентификатор действия (используется для генерации типов и логов)
   async (_arg, { dispatch, extra: api }) => {
-    // Отправляем DELETE-запрос на сервер, чтобы завершить сессию пользователя
-    await api.delete(APIRoute.Logout);
-
-    // Удаляем токен из localStorage, чтобы "разлогинить" пользователя локально
-    dropToken();
-
-    // Обновляем статус авторизации в Redux-состоянии на "не авторизован"
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    try{
+      // Отправляем DELETE-запрос на сервер, чтобы завершить сессию пользователя
+      await api.delete(APIRoute.Logout);
+      // Удаляем токен из localStorage, чтобы "разлогинить" пользователя локально
+      dropToken();
+      // Обновляем статус авторизации в Redux-состоянии на "не авторизован"
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    } catch(error) {
+      dispatch(setError('Не удалось разлогиниться'));
+      setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
+      throw error;
+    }
   }
 );
 
