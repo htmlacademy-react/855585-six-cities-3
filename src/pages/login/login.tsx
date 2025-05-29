@@ -5,27 +5,36 @@ import { FormEvent, useRef } from 'react';
 import { AuthData } from '../../types/auth-data';
 import { useAppDispatch } from '../../store';
 import { loginAction } from '../../store/api-actions';
+import { useAppSelector } from '../../store';
+import { getError } from '../../store/selectors';
+import './login.css';
+
 
 function Login(): JSX.Element {
 
-  const loginRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const dispatch = useAppDispatch();
 
   const onFormSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
-
   };
+
+  const error = useAppSelector(getError); // Redux error
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if(loginRef.current !== null && passwordRef.current !== null) {
-      onFormSubmit({
-        login: loginRef.current.value,
-        password: passwordRef.current.value,
-      });
+    if (formRef.current !== null) {
+      //FormData принимает форму (formRef.current) как аргумент и находит все элементы с атрибутами name и value.
+      const formData = new FormData(formRef.current);
+      //получает значение поля с name="email"
+      const login = formData.get('email') as string;
+      //значение поля с name="password"
+      const password = formData.get('password') as string;
+      if (typeof login === 'string' && typeof password === 'string') {
+        onFormSubmit({ login, password });
+      }
     }
   };
 
@@ -51,6 +60,7 @@ function Login(): JSX.Element {
             <form className="login__form form"
               action="#"
               method="post"
+              ref={formRef}
               onSubmit={handleSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
@@ -58,7 +68,6 @@ function Login(): JSX.Element {
                 <input className="login__input form__input"
                   type="email" name="email"
                   placeholder="Email"
-                  ref={loginRef}
                   required
                 />
               </div>
@@ -68,12 +77,12 @@ function Login(): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  ref={passwordRef}
                   required
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>
             </form>
+            {error && <p className="login__error error">{error}</p>}
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">

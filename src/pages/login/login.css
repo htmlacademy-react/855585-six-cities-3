@@ -1,0 +1,6 @@
+.login__error {
+  display: flex;
+  height: 50px;
+  text-decoration: underline 1px solid red;
+  color: red;
+}
