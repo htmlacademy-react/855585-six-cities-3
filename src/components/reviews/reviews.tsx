@@ -1,10 +1,10 @@
 import ReviewForm from '../review-form/review-form';
 import ReviewList from '../review-list/review-list';
-import type { TReview } from '../../types/treview';
+import type { ReviewType } from '../../types/treview';
 
 type ReviewsProps = {
   isAuth: boolean;
-  reviews: TReview[];
+  reviews: ReviewType[];
 }
 
 function Reviews({isAuth, reviews}: ReviewsProps): JSX.Element {

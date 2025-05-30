@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, OffersState } from '../types/store';
-import { TOffer } from '../types/toffer';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, redirectToRoute, setUserEmail } from './actions';
+import { ShortOfferType, FullOfferType } from '../types/toffer';
+import { ReviewType } from '../types/treview';
+import { loadOffers, loadOffer, loadNearbyOffers, loadOfferComments, requireAuthorization, setError, setOffersDataLoadingStatus, setOfferDataLoadingStatus, redirectToRoute, setUserEmail } from './actions';
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute } from '../const';
 import { AuthData } from '../types/auth-data';
@@ -36,7 +37,7 @@ export const fetchOffersAction = createAsyncThunk<
     try {
       dispatch(setOffersDataLoadingStatus(true));
       //Делаем GET-запрос к API, чтобы получить список предложений (offers)
-      const { data } = await api.get<TOffer[]>(APIRoute.Offers);
+      const { data } = await api.get<ShortOfferType[]>(APIRoute.Offers);
       dispatch(setOffersDataLoadingStatus(false));
       //После успешного получения данных отправляем их в store с помощью экшена
       dispatch(loadOffers(data));
@@ -45,6 +46,79 @@ export const fetchOffersAction = createAsyncThunk<
     }
   }
 );
+
+//Действие которое отправляет GET-запрос на получение конкретного оффера
+export const fetchOfferAction = createAsyncThunk<
+  void,
+  string,//Тип аргумента, который принимает (в этом случае — ничего)
+  {
+    dispatch: AppDispatch;
+    state: OffersState;
+    extra: AxiosInstance;
+  }
+>(
+  'data/fetchOffer',
+
+  async (id, { dispatch, extra: api }) => {
+    try {
+      dispatch(setOfferDataLoadingStatus(true));
+      const { data } = await api.get<FullOfferType>(`${APIRoute.Offers}/${id}`);
+      dispatch(setOfferDataLoadingStatus(false));
+      dispatch(loadOffer(data));
+    } catch(error) {
+      dispatch(setError('Не удалось загрузить предложение'));
+    }
+  }
+);
+
+//Действие которое отправляет GET-запрос на получение офферов неподалеку
+export const fetchNearbyOffersAction = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: OffersState;
+    extra: AxiosInstance;
+  }
+>(
+  'data/fetchOffersNeaby',
+
+  async (id, { dispatch, extra: api }) => {
+    try {
+      dispatch(setOfferDataLoadingStatus(true));
+      const { data } = await api.get<ShortOfferType[]>(`${APIRoute.Offers}/${id}/nearby`);
+      dispatch(setOfferDataLoadingStatus(false));
+      dispatch(loadNearbyOffers(data));
+    } catch(error) {
+      dispatch(setError('Не удалось загрузить предложения неподалеку'));
+    }
+  }
+);
+
+//Действие которое отправляет GET-запрос на получение комментов к офферу
+export const fetchOfferCommentsAction = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: OffersState;
+    extra: AxiosInstance;
+  }
+>(
+  'data/fetchOfferComments',
+
+  async (id, { dispatch, extra: api }) => {
+    try {
+      dispatch(setOfferDataLoadingStatus(true));
+      const { data } = await api.get<ReviewType[]>(`${APIRoute.Comments}/${id}`);
+      dispatch(setOfferDataLoadingStatus(false));
+      dispatch(loadOfferComments(data));
+    } catch(error) {
+      dispatch(setError('Не удалось загрузить комментарии'));
+    }
+  }
+);
+
 
 //асинхронный экшен проверяет, авторизован ли пользователь, отправляя GET-запрос к эндпоинту /login.
 // В зависимости от ответа, он диспатчит один из двух экшенов: Auth или NoAuth.

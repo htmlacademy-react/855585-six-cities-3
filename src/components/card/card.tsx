@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { TOffer} from '../../types/toffer';
+import { ShortOfferType } from '../../types/toffer';
 import { AppRoute } from '../../const';
 import { capitalize } from '../../utils';
 
 type CardProps = {
-  offer: TOffer;
+  offer: ShortOfferType;
   block: string;
-  onActiveCardChange?: (offer: TOffer | null) => void;
+  onActiveCardChange?: (offer: ShortOfferType | null) => void;
 }
 
 function Card({offer, block, onActiveCardChange}: CardProps): JSX.Element {

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { TOffer } from '../../types/toffer';
+import { ShortOfferType } from '../../types/toffer';
 
 type FavoriteCardProps = {
-  offer: TOffer;
+  offer: ShortOfferType;
 }
 
 function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
@@ -37,7 +37,7 @@ function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to="#">{offer.description}</Link>
+          <Link to="#">{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

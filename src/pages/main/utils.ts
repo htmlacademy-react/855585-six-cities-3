@@ -1,7 +1,7 @@
-import { TOffer } from '../../types/toffer';
+import { ShortOfferType } from '../../types/toffer';
 import { sortingValues} from '../../const';
 
-export const getFilteredOffers = (offers: TOffer[], activeFilter: string) => {
+export const getFilteredOffers = (offers: ShortOfferType[], activeFilter: string) => {
   switch(activeFilter) {
     case sortingValues.lowToHigh:
       return offers.slice().sort((a, b) => a.price - b.price);

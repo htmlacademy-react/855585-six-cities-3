@@ -3,26 +3,30 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reviews from '../../components/reviews/reviews';
 import { AuthorizationStatus } from '../../const';
-import type { TReview } from '../../types/treview';
 import Map from '../../components/map/map';
-import { TOffer } from '../../types/toffer';
 import { capitalize, stylizesRating } from '../../utils';
 import Card from '../../components/card/card';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { fetchOfferAction, fetchNearbyOffersAction, fetchOfferCommentsAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 type OfferProps = {
-  offers: TOffer[];
   authorizationStatus: AuthorizationStatus;
-  reviews: TReview[];
 }
-function Offer({authorizationStatus, offers, reviews}: OfferProps): JSX.Element {
-  const {id} = useParams<{ id: string }>();
+function Offer({ authorizationStatus }: OfferProps): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+  const currentOffer = useAppSelector((state) => state.offer);
+  const nearbyOffers = useAppSelector((state) => state.offersNeaby);
+  const currentOfferComments = useAppSelector((state) => state.offerComments);
 
-  const currentOffer = offers.find((offer) => offer.id === id);
-
-  const offersInCurrentCity = offers.filter((offer) => offer.city.name === currentOffer?.city.name);
-
-  const nearbyOffers = offersInCurrentCity.slice(0, 3);
-
+  useEffect(() => {
+    if (id && currentOffer?.id !== id) {
+      dispatch(fetchOfferAction(id));
+      dispatch(fetchNearbyOffersAction(id));
+      dispatch(fetchOfferCommentsAction(id));
+    }
+  }, [id, currentOffer?.id, dispatch]);
 
   return (
     <div className="page">
@@ -34,7 +38,7 @@ function Offer({authorizationStatus, offers, reviews}: OfferProps): JSX.Element 
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer?.images.map((image) => (
+              {currentOffer?.images?.map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img className="offer__image" src={image} alt="Photo studio"/>
                 </div>
@@ -81,7 +85,7 @@ function Offer({authorizationStatus, offers, reviews}: OfferProps): JSX.Element 
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {currentOffer?.goods.map((good) => <li key={good} className="offer__inside-item">{good}</li>)}
+                  {currentOffer?.goods?.map((good) => <li key={good} className="offer__inside-item">{good}</li>)}
                 </ul>
               </div>
               <div className="offer__host">
@@ -107,8 +111,8 @@ function Offer({authorizationStatus, offers, reviews}: OfferProps): JSX.Element 
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth} reviews={reviews}/>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{currentOfferComments.length}</span></h2>
+                <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth} reviews={currentOfferComments}/>
               </section>
             </div>
           </div>

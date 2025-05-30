@@ -1,8 +1,8 @@
-import { TReview } from '../../types/treview';
+import { ReviewType } from '../../types/treview';
 import { stylizesRating } from '../../utils';
 
 type ReviewProps = {
-  review: TReview;
+  review: ReviewType;
 }
 
 function Review({review}: ReviewProps): JSX.Element {

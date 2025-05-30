@@ -19,6 +19,7 @@ export enum AppRoute {
 
 export enum APIRoute {
   Offers = '/offers',
+  Comments = '/comments',
   Favorite = '/favorite',
   Login = '/login',
   Logout = '/logout',
