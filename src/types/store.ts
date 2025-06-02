@@ -8,7 +8,7 @@ export type OffersState = {
   city: string;
   offers: ShortOfferType[];
   offer: FullOfferType | null;
-  offersNeaby: ShortOfferType[];
+  offersNearby: ShortOfferType[];
   offerComments: ReviewType[];
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;

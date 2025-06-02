@@ -12,7 +12,7 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 
-function App(): JSX.Element {//favoriteOffers,
+function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
@@ -48,7 +48,6 @@ function App(): JSX.Element {//favoriteOffers,
             element={
               <Offer
                 authorizationStatus={authorizationStatus}
-                // reviews={reviews}
               />
             }
           />

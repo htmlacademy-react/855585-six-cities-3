@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, OffersState } from '../types/store';
@@ -47,10 +48,9 @@ export const fetchOffersAction = createAsyncThunk<
   }
 );
 
-//Действие которое отправляет GET-запрос на получение конкретного оффера
 export const fetchOfferAction = createAsyncThunk<
   void,
-  string,//Тип аргумента, который принимает (в этом случае — ничего)
+  string,
   {
     dispatch: AppDispatch;
     state: OffersState;
@@ -58,15 +58,20 @@ export const fetchOfferAction = createAsyncThunk<
   }
 >(
   'data/fetchOffer',
-
   async (id, { dispatch, extra: api }) => {
     try {
+      dispatch(loadOffer(null));
       dispatch(setOfferDataLoadingStatus(true));
       const { data } = await api.get<FullOfferType>(`${APIRoute.Offers}/${id}`);
-      dispatch(setOfferDataLoadingStatus(false));
       dispatch(loadOffer(data));
-    } catch(error) {
-      dispatch(setError('Не удалось загрузить предложение'));
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      } else {
+        dispatch(setError('Не удалось загрузить оффер'));
+      }
+    } finally {
+      dispatch(setOfferDataLoadingStatus(false));
     }
   }
 );
@@ -81,7 +86,7 @@ export const fetchNearbyOffersAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >(
-  'data/fetchOffersNeaby',
+  'data/fetchOffersNearby',
 
   async (id, { dispatch, extra: api }) => {
     try {

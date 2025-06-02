@@ -14,7 +14,8 @@ export enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer'
+  Offer = '/offer',
+  NotFound = '/404'
 }
 
 export enum APIRoute {
@@ -23,6 +24,7 @@ export enum APIRoute {
   Favorite = '/favorite',
   Login = '/login',
   Logout = '/logout',
+  NotFound = '/404'
 }
 
 export enum AuthorizationStatus {
