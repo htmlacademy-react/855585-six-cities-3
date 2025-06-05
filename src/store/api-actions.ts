@@ -4,6 +4,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, OffersState } from '../types/store';
 import { ShortOfferType, FullOfferType } from '../types/toffer';
 import { ReviewType } from '../types/treview';
+import { CommentPostType } from '../types/comment';
 import { loadOffers, loadOffer, loadNearbyOffers, loadOfferComments, requireAuthorization, setError, setOffersDataLoadingStatus, setOfferDataLoadingStatus, redirectToRoute, setUserEmail } from './actions';
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute } from '../const';
@@ -124,6 +125,30 @@ export const fetchOfferCommentsAction = createAsyncThunk<
   }
 );
 
+//Действие которое отправляет коммент к офферу
+export const addOfferCommentAction = createAsyncThunk<
+  void,
+  CommentPostType,
+  {
+    dispatch: AppDispatch;
+    state: OffersState;
+    extra: AxiosInstance;
+  }
+>(
+  'data/addOfferComment',
+  async ({ id, comment, rating }, { dispatch, extra: api }) => {
+    try {
+      await api.post<CommentPostType>(`${APIRoute.Comments}/${id}`, {
+        comment,
+        rating,
+      });
+      const { data } = await api.get<ReviewType[]>(`${APIRoute.Comments}/${id}`);
+      dispatch(loadOfferComments(data));
+    } catch (error) {
+      dispatch(setError('Не удалось оставить комментарий'));
+    }
+  }
+);
 
 //асинхронный экшен проверяет, авторизован ли пользователь, отправляя GET-запрос к эндпоинту /login.
 // В зависимости от ответа, он диспатчит один из двух экшенов: Auth или NoAuth.
