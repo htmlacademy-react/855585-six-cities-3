@@ -1,13 +1,18 @@
-import { TOffer } from './toffer';
+import { ShortOfferType, FullOfferType } from './toffer';
+import { ReviewType } from './treview';
 import type {store} from '../store';
 import { AuthorizationStatus } from '../const';
 
 
 export type OffersState = {
   city: string;
-  offers: TOffer[];
+  offers: ShortOfferType[];
+  offer: FullOfferType | null;
+  offersNearby: ShortOfferType[];
+  offerComments: ReviewType[];
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
+  isOfferDataLoading: boolean;
   error: string | null;
   email: string | null;
 }

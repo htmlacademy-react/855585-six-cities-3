@@ -1,14 +1,14 @@
+import { useAppSelector } from '../../store';
 import Review from '../review/review';
-import { TReview } from '../../types/treview';
 
-type ReviewListProps = {
-  reviews: TReview[];
-}
+function ReviewList() {
+  const reviews = useAppSelector((state) => state.offerComments);
 
-function ReviewList({reviews}: ReviewListProps) {
-  return(
+  return (
     <ul className="reviews__list">
-      {reviews.map((review) => <Review key={review.id} review={review}/>)}
+      {reviews.map((review) => (
+        <Review key={review.id} review={review} />
+      ))}
     </ul>
   );
 }

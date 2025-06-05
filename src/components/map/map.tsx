@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { TOffer } from '../../types/toffer.ts';
+import { FullOfferType, ShortOfferType } from '../../types/toffer.ts';
 import 'leaflet/dist/leaflet.css';
 import { useMap } from './useMap.ts';
 import leaflet, { LayerGroup } from 'leaflet';
@@ -7,8 +7,8 @@ import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const.ts';
 
 type MapProps = {
   className?: string;
-  offers: TOffer[];
-  activeOffer?: TOffer | null;
+  offers: ShortOfferType[];
+  activeOffer?: ShortOfferType | FullOfferType | null;
 }
 
 const defaultCustomIcon = leaflet.icon({

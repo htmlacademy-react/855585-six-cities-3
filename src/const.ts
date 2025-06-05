@@ -14,14 +14,17 @@ export enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer'
+  Offer = '/offer',
+  NotFound = '/404'
 }
 
 export enum APIRoute {
   Offers = '/offers',
+  Comments = '/comments',
   Favorite = '/favorite',
   Login = '/login',
   Logout = '/logout',
+  NotFound = '/404'
 }
 
 export enum AuthorizationStatus {

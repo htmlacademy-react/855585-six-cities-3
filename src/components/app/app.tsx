@@ -7,20 +7,12 @@ import NotFound from '../../pages/not-found/not-found';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {HelmetProvider} from 'react-helmet-async';
-// import {TOffer} from '../../types/toffer';
-import {TReview} from '../../types/treview';
 import { useAppSelector } from '../../store';
 import LoadingScreen from '../loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 
-type AppProps = {
-  // favoriteOffers: TOffer[];
-  reviews: TReview[];
-}
-
-function App({reviews}: AppProps): JSX.Element {//favoriteOffers,
-  const offers = useAppSelector((state) => state.offers);
+function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
@@ -54,9 +46,8 @@ function App({reviews}: AppProps): JSX.Element {//favoriteOffers,
           <Route
             path={`${AppRoute.Offer}/:id`}
             element={
-              <Offer authorizationStatus={AuthorizationStatus.Auth}
-                offers={offers}
-                reviews={reviews}
+              <Offer
+                authorizationStatus={authorizationStatus}
               />
             }
           />

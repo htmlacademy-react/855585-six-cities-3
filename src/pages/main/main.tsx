@@ -1,5 +1,5 @@
 import Header from '../../components/header/header';
-import { TOffer } from '../../types/toffer';
+import { ShortOfferType } from '../../types/toffer';
 import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import { useState } from 'react';
@@ -11,8 +11,8 @@ import { selectActiveCity,selectOffers } from '../../store/selectors';
 import { getFilteredOffers } from './utils';
 
 function Main(): JSX.Element {
-  const [activeOffer, setActiveOffer] = useState<TOffer | null>(null);
-  const handleActiveCardChange = (offer: TOffer | null) => setActiveOffer(offer);
+  const [activeOffer, setActiveOffer] = useState<ShortOfferType | null>(null);
+  const handleActiveCardChange = (offer: ShortOfferType | null) => setActiveOffer(offer);
   const [sortValue, setSortValue] = useState<string>(sortingValues.popular);
 
 
