@@ -124,7 +124,7 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{currentOfferComments.length}</span></h2>
-                <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth} reviews={currentOfferComments} />
+                <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth} />
               </section>
             </div>
           </div>
