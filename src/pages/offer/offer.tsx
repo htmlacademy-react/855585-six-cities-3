@@ -19,10 +19,10 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
-  const currentOffer = useAppSelector((state) => state.offer);
-  const nearbyOffers = useAppSelector((state) => state.offersNearby);
-  const currentOfferComments = useAppSelector((state) => state.offerComments);
-  const isOfferLoading = useAppSelector((state) => state.isOfferDataLoading);
+  const currentOffer = useAppSelector((state) => state.offersData.offer);
+  const nearbyOffers = useAppSelector((state) => state.offersData.nearbyOffers);
+  const currentOfferComments = useAppSelector((state) => state.offersData.offerComments);
+  const isOfferLoading = useAppSelector((state) => state.offersData.isLoadingOffer);
 
   useEffect(() => {
     if (id && String(currentOffer?.id) !== id) {

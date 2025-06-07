@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { cities } from '../../const';
 import { useAppDispatch } from '../../store';
-import { setCity } from '../../store/actions';
+import { setCity } from '../../store/slices/current-city-slice';
 import React, { useCallback } from 'react';
 
 type LocationsListProps = {

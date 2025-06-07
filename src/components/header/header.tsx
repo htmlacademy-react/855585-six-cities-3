@@ -9,8 +9,8 @@ import AuthorizedUserNav from '../authorized-user-nav/authorized-user-nav';
 function HeaderComponent(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const userEmail = useAppSelector((state) => state.email);
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const userEmail = useAppSelector((state) => state.user.email);
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
