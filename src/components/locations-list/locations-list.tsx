@@ -2,17 +2,18 @@ import { Link } from 'react-router-dom';
 import { cities } from '../../const';
 import { useAppDispatch } from '../../store';
 import { setCity } from '../../store/actions';
+import React, { useCallback } from 'react';
 
 type LocationsListProps = {
   activeCity: string | null;
 };
 
-function LocationsList({activeCity}: LocationsListProps) {
+function LocationsListComponent({ activeCity }: LocationsListProps) {
   const dispatch = useAppDispatch();
 
-  function handleCityClick(city: string) {
+  const handleCityClick = useCallback((city: string) => {
     dispatch(setCity(city));
-  }
+  }, [dispatch]);
 
   return (
     <ul className="locations__list tabs__list">
@@ -21,7 +22,10 @@ function LocationsList({activeCity}: LocationsListProps) {
           className="locations__item"
           onClick={() => handleCityClick(city)}
         >
-          <Link className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`} to="#">
+          <Link
+            className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
+            to="#"
+          >
             <span>{city}</span>
           </Link>
         </li>
@@ -29,5 +33,7 @@ function LocationsList({activeCity}: LocationsListProps) {
     </ul>
   );
 }
+
+const LocationsList = React.memo(LocationsListComponent);
 
 export default LocationsList;

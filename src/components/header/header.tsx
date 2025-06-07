@@ -1,3 +1,4 @@
+import React from 'react';
 import Logo from '../logo/logo';
 import { AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
@@ -5,8 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import SignInLink from '../sign-in-link/sign-in-link';
 import AuthorizedUserNav from '../authorized-user-nav/authorized-user-nav';
 
-
-function Header(): JSX.Element {
+function HeaderComponent(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
@@ -16,19 +16,20 @@ function Header(): JSX.Element {
     evt.preventDefault();
     dispatch(logoutAction());
   };
+
   return (
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Logo/>
+            <Logo />
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">
               {authorizationStatus === AuthorizationStatus.Auth ? (
-                <AuthorizedUserNav onClick={handleLogout} userEmail={userEmail}/>
+                <AuthorizedUserNav onClick={handleLogout} userEmail={userEmail} />
               ) : (
-                <SignInLink/>
+                <SignInLink />
               )}
             </ul>
           </nav>
@@ -37,5 +38,8 @@ function Header(): JSX.Element {
     </header>
   );
 }
+
+// Оборачиваем в React.memo для избежания лишних ререндеров
+const Header = React.memo(HeaderComponent);
 
 export default Header;

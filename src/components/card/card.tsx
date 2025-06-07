@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShortOfferType } from '../../types/toffer';
 import { AppRoute } from '../../const';
@@ -7,10 +8,10 @@ type CardProps = {
   offer: ShortOfferType;
   block: string;
   onActiveCardChange?: (offer: ShortOfferType | null) => void;
-}
+};
 
-function Card({offer, block, onActiveCardChange}: CardProps): JSX.Element {
-  const {id, isPremium, previewImage, price, title, type} = offer;
+function CardComponent({ offer, block, onActiveCardChange }: CardProps): JSX.Element {
+  const { id, isPremium, previewImage, price, title, type } = offer;
 
   const handleCardMouseEnter = () => {
     onActiveCardChange?.(offer);
@@ -19,6 +20,7 @@ function Card({offer, block, onActiveCardChange}: CardProps): JSX.Element {
   const handleCardMouseLeave = () => {
     onActiveCardChange?.(null);
   };
+
   return (
     <Link to={`${AppRoute.Offer}/${id}`}>
       <article
@@ -26,12 +28,13 @@ function Card({offer, block, onActiveCardChange}: CardProps): JSX.Element {
         onMouseEnter={handleCardMouseEnter}
         onMouseLeave={handleCardMouseLeave}
       >
-        {isPremium &&
+        {isPremium && (
           <div className="place-card__mark">
             <span>Premium</span>
-          </div>}
+          </div>
+        )}
         <div className={`${block}__image-wrapper place-card__image-wrapper`}>
-          <img className="place-card__image" src={previewImage}/>
+          <img className="place-card__image" src={previewImage} />
         </div>
         <div className="place-card__info">
           <div className="place-card__price-wrapper">
@@ -48,7 +51,7 @@ function Card({offer, block, onActiveCardChange}: CardProps): JSX.Element {
           </div>
           <div className="place-card__rating rating">
             <div className="place-card__stars rating__stars">
-              <span style={{width: '80%'}}></span>
+              <span style={{ width: '80%' }}></span>
               <span className="visually-hidden">Rating</span>
             </div>
           </div>
@@ -59,5 +62,8 @@ function Card({offer, block, onActiveCardChange}: CardProps): JSX.Element {
     </Link>
   );
 }
+
+// Оборачиваем компонент в React.memo, чтобы избежать лишнего рендера, будет происходить только при изменении props
+const Card = React.memo(CardComponent);
 
 export default Card;
