@@ -8,10 +8,10 @@ import browserHistory from '../../browser-history';
 import { Middleware } from 'redux';
 
 // Импорт редьюсера, чтобы получить тип состояния всего стора
-import { reducer } from '../reducer';
+import rootReducer from '../root-reducer';
 
 // Получаем тип состояния стора из редьюсера
-type Reducer = ReturnType<typeof reducer>;
+type Reducer = ReturnType<typeof rootReducer>;
 
 // Создаём кастомный middleware для перехвата экшенов редиректа
 export const redirect: Middleware<unknown, Reducer> =

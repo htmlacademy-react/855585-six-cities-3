@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import { ShortOfferType } from '../../types/toffer';
+import { useToggleFavorite } from '../../hooks/useToggleFavorite';
+
 
 type FavoriteCardProps = {
   offer: ShortOfferType;
 }
 
-function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
+function FavoriteCard({ offer }: FavoriteCardProps): JSX.Element {
+  const toggleFavorite = useToggleFavorite();
+
+  const handleFavoriteClick = () => {
+    toggleFavorite(offer.id, offer.isFavorite);
+  };
   return (
     <article className="favorites__card place-card">
       {offer.isPremium &&
@@ -23,7 +30,11 @@ function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            type="button"
+            onClick={handleFavoriteClick}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

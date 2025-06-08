@@ -2,7 +2,7 @@ import { useAppSelector } from '../../store';
 import Review from '../review/review';
 
 function ReviewList() {
-  const reviews = useAppSelector((state) => state.offerComments);
+  const reviews = useAppSelector((state) => state.offersData.offerComments);
 
   return (
     <ul className="reviews__list">

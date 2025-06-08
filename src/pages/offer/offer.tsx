@@ -7,21 +7,27 @@ import Map from '../../components/map/map';
 import { capitalize, stylizesRating } from '../../utils';
 import Card from '../../components/card/card';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { fetchOfferAction, fetchNearbyOffersAction, fetchOfferCommentsAction } from '../../store/api-actions';
-import { useEffect } from 'react';
+import { useToggleFavorite } from '../../hooks/useToggleFavorite';
+import {
+  fetchOfferAction,
+  fetchNearbyOffersAction,
+  fetchOfferCommentsAction,
+} from '../../store/api-actions';
+import { useEffect, useMemo } from 'react';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 
 type OfferProps = {
   authorizationStatus: AuthorizationStatus;
 }
+
 function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  const currentOffer = useAppSelector((state) => state.offer);
-  const nearbyOffers = useAppSelector((state) => state.offersNearby);
-  const currentOfferComments = useAppSelector((state) => state.offerComments);
 
-  const isOfferLoading = useAppSelector((state) => state.isOfferDataLoading);
+  const currentOffer = useAppSelector((state) => state.offersData.offer);
+  const nearbyOffers = useAppSelector((state) => state.offersData.nearbyOffers);
+  const currentOfferComments = useAppSelector((state) => state.offersData.offerComments);
+  const isOfferLoading = useAppSelector((state) => state.offersData.isLoadingOffer);
 
   useEffect(() => {
     if (id && String(currentOffer?.id) !== id) {
@@ -31,6 +37,31 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
     }
   }, [id, currentOffer?.id, dispatch]);
 
+  const ratingWidth = useMemo(
+    () => stylizesRating(currentOffer?.rating),
+    [currentOffer?.rating]
+  );
+
+  const capitalizedType = currentOffer?.type ? capitalize(currentOffer.type) : '';
+  const images = currentOffer?.images ?? [];
+  const goods = currentOffer?.goods ?? [];
+
+  const nearbyOffersCards = useMemo(
+    () => nearbyOffers.map((offer) => (
+      <Card key={offer.id} offer={offer} block="near-places" />
+    )),
+    [nearbyOffers]
+  );
+
+  const toggleFavorite = useToggleFavorite(true);
+
+  const handleFavoriteClick = () => {
+    if (!currentOffer) {
+      return;
+    }
+    toggleFavorite(currentOffer.id, currentOffer.isFavorite);
+  };
+
   if (isOfferLoading) {
     return <LoadingScreen />;
   }
@@ -38,7 +69,6 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
   if (!currentOffer) {
     return null;
   }
-
 
   return (
     <div className="page">
@@ -50,7 +80,7 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer?.images?.map((image) => (
+              {images.map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img className="offer__image" src={image} alt="Photo studio" />
                 </div>
@@ -59,59 +89,64 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {currentOffer?.isPremium &&
+              {currentOffer.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
-                </div>}
+                </div>
+              )}
               <div className="offer__name-wrapper">
-                <h1 className="offer__name">{currentOffer?.title}</h1>
-                <button className="offer__bookmark-button button" type="button">
+                <h1 className="offer__name">{currentOffer.title}</h1>
+                <button
+                  className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
+                  type="button"
+                  onClick={handleFavoriteClick}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
-                  <span className="visually-hidden">To bookmarks</span>
+                  <span className="visually-hidden">
+                    {currentOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+                  </span>
                 </button>
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: stylizesRating(currentOffer?.rating) }}></span>
-                  <span className="visually-hidden">{currentOffer?.rating}</span>
+                  <span style={{ width: ratingWidth }}></span>
+                  <span className="visually-hidden">{currentOffer.rating}</span>
                 </div>
-                <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
+                <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">
-                  {currentOffer?.type && capitalize(currentOffer.type)}
-                </li>
-                <li className="offer__feature offer__feature--bedrooms">
-                  {currentOffer?.bedrooms} Bedrooms
-                </li>
-                <li className="offer__feature offer__feature--adults">
-                  Max {currentOffer?.maxAdults} adults
-                </li>
+                <li className="offer__feature offer__feature--entire">{capitalizedType}</li>
+                <li className="offer__feature offer__feature--bedrooms">{currentOffer.bedrooms} Bedrooms</li>
+                <li className="offer__feature offer__feature--adults">Max {currentOffer.maxAdults} adults</li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{currentOffer?.price}</b>
+                <b className="offer__price-value">&euro;{currentOffer.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {currentOffer?.goods?.map((good) => <li key={good} className="offer__inside-item">{good}</li>)}
+                  {goods.map((good) => (
+                    <li key={good} className="offer__inside-item">{good}</li>
+                  ))}
                 </ul>
               </div>
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width="74" height="74" alt="Host avatar" />
+                    <img
+                      className="offer__avatar user__avatar"
+                      src={currentOffer.host.avatarUrl}
+                      width="74"
+                      height="74"
+                      alt="Host avatar"
+                    />
                   </div>
-                  <span className="offer__user-name">
-                    {currentOffer?.host.name}
-                  </span>
-                  <span className="offer__user-status">
-                    {currentOffer?.host.isPro}
-                  </span>
+                  <span className="offer__user-name">{currentOffer.host.name}</span>
+                  <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : ''}</span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
@@ -123,24 +158,19 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{currentOfferComments.length}</span></h2>
+                <h2 className="reviews__title">
+                  Reviews &middot; <span className="reviews__amount">{currentOfferComments.length}</span>
+                </h2>
                 <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth} />
               </section>
             </div>
           </div>
-          <Map className='offer__map'
-            offers={nearbyOffers}
-            activeOffer={currentOffer}
-          />
+          <Map className="offer__map" offers={nearbyOffers} activeOffer={currentOffer} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              {nearbyOffers.map((offer) => (
-                <Card key={offer.id} offer={offer} block="near-places" />
-              ))}
-            </div>
+            <div className="near-places__list places__list">{nearbyOffersCards}</div>
           </section>
         </div>
       </main>
@@ -149,4 +179,3 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
 }
 
 export default Offer;
-

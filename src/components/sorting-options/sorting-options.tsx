@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import { sortingValues } from '../../const';
 
 type SortingOptionsProps = {
@@ -5,7 +6,10 @@ type SortingOptionsProps = {
   onSortClick: (value: string) => void;
 };
 
-function SortingOptions({ sortValue, onSortClick}: SortingOptionsProps): JSX.Element {
+function SortingOptionsComponent({ sortValue, onSortClick }: SortingOptionsProps): JSX.Element {
+  const handleSortClick = useCallback((value: string) => {
+    onSortClick(value);
+  }, [onSortClick]);
 
   return (
     <form className="places__sorting" action="#" method="get">
@@ -22,15 +26,16 @@ function SortingOptions({ sortValue, onSortClick}: SortingOptionsProps): JSX.Ele
             key={value}
             className={`places__option ${value === sortValue ? 'places__option--active' : ''}`}
             tabIndex={0}
-            onClick={() => onSortClick(value)}
+            onClick={() => handleSortClick(value)}
           >
             {value}
           </li>
-
         ))}
       </ul>
     </form>
   );
 }
+
+const SortingOptions = React.memo(SortingOptionsComponent);
 
 export default SortingOptions;
