@@ -1,15 +1,16 @@
 import { Helmet } from 'react-helmet-async';
-// import { TOffer } from '../../types/toffer';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FavoriteList from '../../components/favorite-list/favorite-list';
-
-
-// type FavoriteProps = {
-//   favoriteOffers: TOffer[];
-// }
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../store';
+import { fetchFavoriteOffersAction } from '../../store/api-actions';
 
 function Favorites(): JSX.Element {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchFavoriteOffersAction());
+  }, [dispatch]);
   return (
     <div className="page">
       <Helmet>

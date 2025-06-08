@@ -10,7 +10,6 @@ function HeaderComponent(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const userEmail = useAppSelector((state) => state.user.email);
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
@@ -27,7 +26,7 @@ function HeaderComponent(): JSX.Element {
           <nav className="header__nav">
             <ul className="header__nav-list">
               {authorizationStatus === AuthorizationStatus.Auth ? (
-                <AuthorizedUserNav onClick={handleLogout} userEmail={userEmail} />
+                <AuthorizedUserNav onClick={handleLogout} />
               ) : (
                 <SignInLink />
               )}

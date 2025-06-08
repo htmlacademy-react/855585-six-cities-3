@@ -9,6 +9,7 @@ import { useAppSelector } from '../../store';
 import { sortingValues } from '../../const';
 import { selectActiveCity, selectOffers } from '../../store/selectors';
 import { getFilteredOffers } from './utils';
+import MainEmpty from '../../components/main-empty/main-empty';
 
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<ShortOfferType | null>(null);
@@ -17,21 +18,26 @@ function Main(): JSX.Element {
   const offers = useAppSelector(selectOffers);
   const activeCity = useAppSelector(selectActiveCity);
 
-  // useMemo мемоизирует отфильтрованные и отсортированные предложения
-  // пересчет будет происходить только если изменятся offers, activeCity или sortValue
   const filteredOffers = useMemo(() => getFilteredOffers(
     offers.filter((offer) => offer.city.name === activeCity),
     sortValue
   ), [offers, activeCity, sortValue]);
 
-  // useCallback мемоизирует функцию handleActiveCardChange,
-  // чтобы она не пересоздавалась при каждом рендере
   const handleActiveCardChange = useCallback(
     (offer: ShortOfferType | null) => {
       setActiveOffer(offer);
     },
-    [] // зависимостей нет — функция не зависит от внешнего состояния
+    []
   );
+
+  if (filteredOffers.length === 0) {
+    return (
+      <div className="page page--gray page--main">
+        <Header />
+        <MainEmpty city={activeCity} />
+      </div>
+    );
+  }
 
   return (
     <div className="page page--gray page--main">

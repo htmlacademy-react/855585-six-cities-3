@@ -8,13 +8,16 @@ type CardListProps = {
 };
 
 const CardListComponent = ({ offers, onActiveCardChange }: CardListProps) => {
-
   const handleActiveCardChange = useCallback(
     (offer: ShortOfferType) => () => {
       onActiveCardChange(offer);
     },
     [onActiveCardChange]
   );
+
+  const handleActiveCardClear = useCallback(() => {
+    onActiveCardChange(null);
+  }, [onActiveCardChange]);
 
   return (
     <div className="cities__places-list places__list tabs__content">
@@ -24,13 +27,13 @@ const CardListComponent = ({ offers, onActiveCardChange }: CardListProps) => {
           offer={offer}
           block="cities"
           onActiveCardChange={handleActiveCardChange(offer)}
+          onActiveCardClear={handleActiveCardClear}
         />
       ))}
     </div>
   );
 };
 
-// React.memo предотвращает его перерендер, если props (offers, onActiveCardChange) не изменились
 const CardList = React.memo(CardListComponent);
 
 export default CardList;

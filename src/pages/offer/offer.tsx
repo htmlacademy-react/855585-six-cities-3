@@ -7,7 +7,12 @@ import Map from '../../components/map/map';
 import { capitalize, stylizesRating } from '../../utils';
 import Card from '../../components/card/card';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { fetchOfferAction, fetchNearbyOffersAction, fetchOfferCommentsAction } from '../../store/api-actions';
+import { useToggleFavorite } from '../../hooks/useToggleFavorite';
+import {
+  fetchOfferAction,
+  fetchNearbyOffersAction,
+  fetchOfferCommentsAction,
+} from '../../store/api-actions';
 import { useEffect, useMemo } from 'react';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 
@@ -32,7 +37,6 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
     }
   }, [id, currentOffer?.id, dispatch]);
 
-  // Меморизируем только вычисление стилей рейтинга
   const ratingWidth = useMemo(
     () => stylizesRating(currentOffer?.rating),
     [currentOffer?.rating]
@@ -42,13 +46,21 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
   const images = currentOffer?.images ?? [];
   const goods = currentOffer?.goods ?? [];
 
-  // Меморизация списка карточек — чтобы не создавать компоненты заново без изменений nearbyOffers
   const nearbyOffersCards = useMemo(
     () => nearbyOffers.map((offer) => (
       <Card key={offer.id} offer={offer} block="near-places" />
     )),
     [nearbyOffers]
   );
+
+  const toggleFavorite = useToggleFavorite(true);
+
+  const handleFavoriteClick = () => {
+    if (!currentOffer) {
+      return;
+    }
+    toggleFavorite(currentOffer.id, currentOffer.isFavorite);
+  };
 
   if (isOfferLoading) {
     return <LoadingScreen />;
@@ -84,11 +96,17 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{currentOffer.title}</h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
+                  type="button"
+                  onClick={handleFavoriteClick}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
-                  <span className="visually-hidden">To bookmarks</span>
+                  <span className="visually-hidden">
+                    {currentOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+                  </span>
                 </button>
               </div>
               <div className="offer__rating rating">

@@ -18,7 +18,8 @@ function LocationsListComponent({ activeCity }: LocationsListProps) {
   return (
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
-        <li key={city}
+        <li
+          key={city}
           className="locations__item"
           onClick={() => handleCityClick(city)}
         >

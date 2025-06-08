@@ -1,50 +1,41 @@
+// Тип для локации
+export type Location = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+};
+
+// Тип для города
 export type City = {
   name: string;
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
-}
+  location: Location;
+};
 
-export type ShortOfferType = {
+// Базовый тип предложения с общими полями
+export type OfferBase = {
   id: string;
   title: string;
   type: string;
   price: number;
   city: City;
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
+  location: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
+};
+
+// Короткий тип предложения, расширяет OfferBase и добавляет previewImage (необязательное)
+export type ShortOfferType = OfferBase & {
   previewImage?: string;
 };
 
-export type FullOfferType = {
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  city: {
-    name: string;
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
-  };
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
-  isFavorite: boolean;
-  isPremium: boolean;
-  rating: number;
+// Избранное предложение — как ShortOfferType, но previewImage обязательный
+export type FavoriteOfferType = OfferBase & {
+  previewImage: string;
+};
+
+// Полное предложение — расширяет OfferBase и добавляет специфичные поля
+export type FullOfferType = OfferBase & {
   description: string;
   bedrooms: number;
   goods: string[];
@@ -56,4 +47,3 @@ export type FullOfferType = {
   images: string[];
   maxAdults: number;
 };
-
