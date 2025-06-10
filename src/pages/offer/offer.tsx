@@ -7,7 +7,7 @@ import Map from '../../components/map/map';
 import { capitalize, stylizesRating } from '../../utils';
 import Card from '../../components/card/card';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { useToggleFavorite } from '../../hooks/useToggleFavorite';
+import { useToggleFavorite } from '../../hooks/use-toggle-favorite';
 import {
   fetchOfferAction,
   fetchNearbyOffersAction,

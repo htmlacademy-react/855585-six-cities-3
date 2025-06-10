@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShortOfferType } from '../../types/offer';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { capitalize, stylizesRating } from '../../utils';
-import { useToggleFavorite } from '../../hooks/useToggleFavorite';
+import { useToggleFavorite } from '../../hooks/use-toggle-favorite';
 import { useAppSelector } from '../../store';
 
 type CardProps = {

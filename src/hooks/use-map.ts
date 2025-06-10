@@ -4,7 +4,7 @@ import { City } from '../types/offer';
 
 function useMap(mapRef: React.RefObject<HTMLElement>, city: City | null) {
   const [map, setMap] = useState<leaflet.Map | null>(null);
-  const isRenderedRef = useRef(false); // защита от повторной инициализации карты
+  const isRenderedRef = useRef(false);
 
   useEffect(() => {
     if (mapRef.current !== null && city !== null && !isRenderedRef.current) {
@@ -30,7 +30,6 @@ function useMap(mapRef: React.RefObject<HTMLElement>, city: City | null) {
     }
   }, [mapRef, city]);
 
-  // Эффект для обновления центра карты при смене города (если карта уже создана)
   useEffect(() => {
     if (map && city) {
       map.setView(

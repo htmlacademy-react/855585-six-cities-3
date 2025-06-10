@@ -11,7 +11,7 @@ function formatReviewDate(dateString: string): { displayDate: string; dateTimeAt
     month: 'long',
     year: 'numeric',
   });
-  const dateTimeAttr = date.toISOString().split('T')[0]; // YYYY-MM-DD
+  const dateTimeAttr = date.toISOString().split('T')[0];
   return { displayDate, dateTimeAttr };
 }
 

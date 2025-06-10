@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { FullOfferType, ShortOfferType } from '../../types/offer.ts';
 import 'leaflet/dist/leaflet.css';
-import { useMap } from '../../hooks/useMap.ts';
+import { useMap } from '../../hooks/use-map.ts';
 import leaflet, { LayerGroup } from 'leaflet';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const.ts';
 

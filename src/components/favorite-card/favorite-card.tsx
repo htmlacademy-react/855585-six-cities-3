@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ShortOfferType } from '../../types/offer';
-import { useToggleFavorite } from '../../hooks/useToggleFavorite';
+import { useToggleFavorite } from '../../hooks/use-toggle-favorite';
 import { AppRoute } from '../../const';
 
 type FavoriteCardProps = {
