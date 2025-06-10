@@ -5,15 +5,16 @@ import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../store';
 import SignInLink from '../sign-in-link/sign-in-link';
 import AuthorizedUserNav from '../authorized-user-nav/authorized-user-nav';
+import { useLocation } from 'react-router-dom';
 
 function HeaderComponent(): JSX.Element {
   const dispatch = useAppDispatch();
-
+  const location = useLocation();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-    dispatch(logoutAction());
+    dispatch(logoutAction({ currentPath: location.pathname }));
   };
 
   return (
@@ -38,7 +39,6 @@ function HeaderComponent(): JSX.Element {
   );
 }
 
-// Оборачиваем в React.memo для избежания лишних ререндеров
 const Header = React.memo(HeaderComponent);
 
 export default Header;

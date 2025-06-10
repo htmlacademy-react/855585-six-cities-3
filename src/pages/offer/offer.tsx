@@ -7,7 +7,7 @@ import Map from '../../components/map/map';
 import { capitalize, stylizesRating } from '../../utils';
 import Card from '../../components/card/card';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { useToggleFavorite } from '../../hooks/useToggleFavorite';
+import { useToggleFavorite } from '../../hooks/use-toggle-favorite';
 import {
   fetchOfferAction,
   fetchNearbyOffersAction,
@@ -15,27 +15,35 @@ import {
 } from '../../store/api-actions';
 import { useEffect, useMemo } from 'react';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
+import { getReviews } from '../../store/selectors';
 
 type OfferProps = {
   authorizationStatus: AuthorizationStatus;
-}
+};
 
-function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
+function Offer({ authorizationStatus }: OfferProps): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
   const currentOffer = useAppSelector((state) => state.offersData.offer);
   const nearbyOffers = useAppSelector((state) => state.offersData.nearbyOffers);
-  const currentOfferComments = useAppSelector((state) => state.offersData.offerComments);
   const isOfferLoading = useAppSelector((state) => state.offersData.isLoadingOffer);
 
   useEffect(() => {
-    if (id && String(currentOffer?.id) !== id) {
-      dispatch(fetchOfferAction(id));
-      dispatch(fetchNearbyOffersAction(id));
-      dispatch(fetchOfferCommentsAction(id));
+    if (!id) {
+      return;
     }
-  }, [id, currentOffer?.id, dispatch]);
+    dispatch(fetchOfferAction(id));
+    dispatch(fetchNearbyOffersAction(id));
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (currentOffer?.id) {
+      dispatch(fetchOfferCommentsAction(currentOffer.id));
+    }
+  }, [currentOffer, dispatch]);
+
+  const comments = useAppSelector(getReviews);
 
   const ratingWidth = useMemo(
     () => stylizesRating(currentOffer?.rating),
@@ -43,32 +51,36 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
   );
 
   const capitalizedType = currentOffer?.type ? capitalize(currentOffer.type) : '';
-  const images = currentOffer?.images ?? [];
+  const images = currentOffer?.images.slice(0, 6) ?? [];
   const goods = currentOffer?.goods ?? [];
 
-  const nearbyOffersCards = useMemo(
-    () => nearbyOffers.map((offer) => (
-      <Card key={offer.id} offer={offer} block="near-places" />
-    )),
+  const nearbyOffersLimited = useMemo(
+    () => nearbyOffers.slice(0, 3),
     [nearbyOffers]
   );
 
-  const toggleFavorite = useToggleFavorite(true);
+  const nearbyOffersCards = useMemo(
+    () => nearbyOffersLimited.map((offer) => (
+      <Card key={offer.id} offer={offer} block="near-places" />
+    )),
+    [nearbyOffersLimited]
+  );
 
-  const handleFavoriteClick = () => {
+  const toggleFavorite = useToggleFavorite();
+
+  const handleFavoriteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (!currentOffer) {
       return;
     }
     toggleFavorite(currentOffer.id, currentOffer.isFavorite);
   };
 
-  if (isOfferLoading) {
+  if (isOfferLoading || !currentOffer) {
     return <LoadingScreen />;
   }
 
-  if (!currentOffer) {
-    return null;
-  }
+  const mapOffers = [currentOffer, ...nearbyOffersLimited.filter((o) => o.id !== currentOffer.id)];
 
   return (
     <div className="page">
@@ -136,7 +148,7 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={`offer__avatar-wrapper user__avatar-wrapper ${currentOffer.host.isPro ? 'offer__avatar-wrapper--pro' : ''}`}>
                     <img
                       className="offer__avatar user__avatar"
                       src={currentOffer.host.avatarUrl}
@@ -146,26 +158,30 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element | null {
                     />
                   </div>
                   <span className="offer__user-name">{currentOffer.host.name}</span>
-                  <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : ''}</span>
+                  {currentOffer.host.isPro && (
+                    <span className="offer__user-status">Pro</span>
+                  )}
                 </div>
+
                 <div className="offer__description">
                   <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {currentOffer.description}
                   </p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
-                  Reviews &middot; <span className="reviews__amount">{currentOfferComments.length}</span>
+                  Reviews &middot; <span className="reviews__amount">{comments.length}</span>
                 </h2>
                 <Reviews isAuth={authorizationStatus === AuthorizationStatus.Auth} />
               </section>
             </div>
           </div>
-          <Map className="offer__map" offers={nearbyOffers} activeOffer={currentOffer} />
+          <Map
+            className="offer__map"
+            offers={mapOffers}
+            activeOffer={currentOffer}
+          />
         </section>
         <div className="container">
           <section className="near-places places">

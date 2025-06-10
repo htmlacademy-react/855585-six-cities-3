@@ -1,16 +1,17 @@
-import {Route, Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Main from '../../pages/main/main';
 import Login from '../../pages/login/login';
 import Favorites from '../../pages/favorites/favorites';
 import Offer from '../../pages/offer/offer';
 import NotFound from '../../pages/not-found/not-found';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
-import {HelmetProvider} from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../store';
 import LoadingScreen from '../loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
+import { Navigate } from 'react-router-dom';
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
@@ -27,19 +28,24 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<Main/>}
+            element={<Main />}
           />
           <Route
             path={AppRoute.Login}
-            element={<Login/>}
+            element={
+              authorizationStatus === AuthorizationStatus.Auth
+                ? <Navigate to={AppRoute.Main} replace />
+                : <Login />
+            }
           />
+
           <Route
             path={AppRoute.Favorites}
             element={
               <PrivateRoute
                 authorizationStatus={AuthorizationStatus.Auth}
               >
-                <Favorites/>
+                <Favorites />
               </PrivateRoute>
             }
           />
@@ -53,7 +59,7 @@ function App(): JSX.Element {
           />
           <Route
             path='*'
-            element={<NotFound/>}
+            element={<NotFound />}
           />
         </Routes>
       </HistoryRouter>

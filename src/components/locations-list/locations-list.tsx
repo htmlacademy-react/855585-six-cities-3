@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { cities } from '../../const';
+import { AppRoute, cities } from '../../const';
 import { useAppDispatch } from '../../store';
 import { setCity } from '../../store/slices/current-city-slice';
 import React, { useCallback } from 'react';
@@ -25,7 +25,7 @@ function LocationsListComponent({ activeCity }: LocationsListProps) {
         >
           <Link
             className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
-            to="#"
+            to={AppRoute.Main}
           >
             <span>{city}</span>
           </Link>
