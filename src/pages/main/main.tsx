@@ -1,34 +1,54 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { ShortOfferType } from '../../types/toffer';
+import { ShortOfferType } from '../../types/offer';
 import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import LocationsList from '../../components/locations-list/locations-list';
 import SortingOptions from '../../components/sorting-options/sorting-options';
-import { useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { sortingValues } from '../../const';
 import { selectActiveCity, selectOffers } from '../../store/selectors';
 import { getFilteredOffers } from './utils';
 import MainEmpty from '../../components/main-empty/main-empty';
+import { setCity } from '../../store/slices/current-city-slice';
 
 function Main(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const cityParam = searchParams.get('city');
+
+  useEffect(() => {
+    if (cityParam) {
+      dispatch(setCity(cityParam));
+    }
+  }, [cityParam, dispatch]);
+
   const [activeOffer, setActiveOffer] = useState<ShortOfferType | null>(null);
   const [sortValue, setSortValue] = useState<string>(sortingValues.popular);
 
   const offers = useAppSelector(selectOffers);
   const activeCity = useAppSelector(selectActiveCity);
 
-  const filteredOffers = useMemo(() => getFilteredOffers(
-    offers.filter((offer) => offer.city.name === activeCity),
-    sortValue
-  ), [offers, activeCity, sortValue]);
+  const filteredOffers = useMemo(() =>
+    getFilteredOffers(
+      offers.filter((offer) => offer.city.name === activeCity),
+      sortValue
+    ), [offers, activeCity, sortValue]);
 
   const handleActiveCardChange = useCallback(
     (offer: ShortOfferType | null) => {
-      setActiveOffer(offer);
+      setActiveOffer((prev) => {
+        if (prev?.id === offer?.id) {
+          return prev;
+        }
+        return offer;
+      });
     },
     []
   );
+
+  const placeText = `${filteredOffers.length} place${filteredOffers.length === 1 ? '' : 's'} to stay in ${activeCity}`;
 
   if (filteredOffers.length === 0) {
     return (
@@ -54,7 +74,7 @@ function Main(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {filteredOffers.length} places to stay in {activeCity}
+                {placeText}
               </b>
               <SortingOptions sortValue={sortValue} onSortClick={setSortValue} />
               <CardList

@@ -31,7 +31,7 @@ function AuthorizedUserNav({ onClick }: AuthorizedUserNavProps): JSX.Element {
         </Link>
       </li>
       <li className="header__nav-item">
-        <Link className="header__nav-link" to="/" onClick={onClick}>
+        <Link className="header__nav-link" to={AppRoute.Main} onClick={onClick}>
           <span className="header__signout">Sign out</span>
         </Link>
       </li>

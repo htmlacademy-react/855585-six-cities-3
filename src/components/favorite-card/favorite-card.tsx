@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { ShortOfferType } from '../../types/toffer';
+import { ShortOfferType } from '../../types/offer';
 import { useToggleFavorite } from '../../hooks/useToggleFavorite';
-
+import { AppRoute } from '../../const';
 
 type FavoriteCardProps = {
   offer: ShortOfferType;
@@ -20,7 +20,7 @@ function FavoriteCard({ offer }: FavoriteCardProps): JSX.Element {
           <span>Premium</span>
         </div>}
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to="#">
+        <Link to={`${AppRoute.Offer}/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place image" />
         </Link>
       </div>
@@ -48,7 +48,7 @@ function FavoriteCard({ offer }: FavoriteCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to="#">{offer.title}</Link>
+          <Link to={`${AppRoute.Offer}/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

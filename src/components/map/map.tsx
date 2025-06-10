@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
-import { FullOfferType, ShortOfferType } from '../../types/toffer.ts';
+import { FullOfferType, ShortOfferType } from '../../types/offer.ts';
 import 'leaflet/dist/leaflet.css';
-import { useMap } from './useMap.ts';
+import { useMap } from '../../hooks/useMap.ts';
 import leaflet, { LayerGroup } from 'leaflet';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const.ts';
 
@@ -9,62 +9,52 @@ type MapProps = {
   className?: string;
   offers: ShortOfferType[];
   activeOffer?: ShortOfferType | FullOfferType | null;
-}
+};
 
 const defaultCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 38],
+  iconAnchor: [13, 38],
 });
 
 const currentCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 38],
+  iconAnchor: [13, 38],
 });
 
 function Map({ className, offers, activeOffer }: MapProps): JSX.Element {
-  const mapRef = useRef(null);
+  const mapRef = useRef<HTMLElement | null>(null);
   const city = offers.length > 0 ? offers[0].city : null;
   const map = useMap(mapRef, city);
   const markerLayer = useRef<LayerGroup>(leaflet.layerGroup());
 
-  // Добавляем слой маркеров в карту (один раз)
   useEffect(() => {
-    if (map) {
+    if (!map) {
+      return;
+    }
+
+    if (!map.hasLayer(markerLayer.current)) {
       markerLayer.current.addTo(map);
     }
-  }, [map]);
 
-  // Обновляем центр карты при смене города
-  useEffect(() => {
-    if (map && city) {
-      map.setView(
-        [city.location.latitude, city.location.longitude],
-        city.location.zoom
-      );
-    }
-  }, [map, city]);
+    markerLayer.current.clearLayers();
 
-  // Обновляем маркеры
-  useEffect(() => {
-    if (map) {
-      markerLayer.current.clearLayers();
+    offers.forEach((offer) => {
+      const isActive = offer.id === activeOffer?.id;
+      const icon = isActive ? currentCustomIcon : defaultCustomIcon;
 
-      offers.forEach((offer) => {
-        leaflet
-          .marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          }, {
-            icon: offer.id === activeOffer?.id
-              ? currentCustomIcon
-              : defaultCustomIcon,
-          })
-          .addTo(markerLayer.current);
-      });
-    }
-  }, [map, offers, activeOffer]);
+      leaflet
+        .marker(
+          {
+            lat: Number(offer.location.latitude.toFixed(6)),
+            lng: Number(offer.location.longitude.toFixed(6)),
+          },
+          { icon }
+        )
+        .addTo(markerLayer.current);
+    });
+  }, [map, offers, activeOffer?.id]);
 
   return (
     <section

@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { processErrorHandle } from './process-error-handle';
 
 
-const BACKEND_URL = 'https://15.design.htmlacademy.pro/six-cities';
+const BACKEND_URL = 'https://16.design.htmlacademy.pro/six-cities';
 const REQUEST_TIMEOUT = 5000;
 
 type DetailMessageType = {
@@ -29,7 +29,6 @@ export const createAPI = (): AxiosInstance => {
     (config: InternalAxiosRequestConfig) => {
       const token = getToken();
 
-      // Если есть токен и объект headers, добавим заголовок
       if (token && config.headers) {
         config.headers['x-token'] = token;
       }
@@ -50,7 +49,6 @@ export const createAPI = (): AxiosInstance => {
       throw error;
     }
   );
-
 
   return api;
 };

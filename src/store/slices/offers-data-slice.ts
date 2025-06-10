@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReviewType } from '../../types/treview';
-import { ShortOfferType, FullOfferType, FavoriteOfferType } from '../../types/toffer';
+import { ReviewType } from '../../types/review';
+import { ShortOfferType, FullOfferType, FavoriteOfferType } from '../../types/offer';
 
 interface OffersDataState {
   offers: ShortOfferType[];
@@ -48,34 +48,29 @@ const offersDataSlice = createSlice({
       state.isLoadingOffer = action.payload;
     },
     updateFavoriteOffer(state, action: PayloadAction<FavoriteOfferType>) {
-      // Обновляем или добавляем оффер в favoriteOffers
       const index = state.favoriteOffers.findIndex((offer) => offer.id === action.payload.id);
       if (index >= 0) {
         state.favoriteOffers[index] = action.payload;
       } else {
         state.favoriteOffers.push(action.payload);
       }
-      // Также обновляем офферы в общем списке и nearbyOffers, если нужно
-      const updateOfferArray = (arr: (ShortOfferType | FavoriteOfferType)[]) => {
-        const idx = arr.findIndex((offer) => offer.id === action.payload.id);
-        if (idx >= 0) {
-          arr[idx] = action.payload;
+      const updateOfferArray = (offers: (ShortOfferType | FavoriteOfferType)[]) => {
+        const offerIndex = offers.findIndex((offer) => offer.id === action.payload.id);
+        if (offerIndex >= 0) {
+          offers[offerIndex] = action.payload;
         }
       };
       updateOfferArray(state.offers);
       updateOfferArray(state.nearbyOffers);
-      // Если загружен полный оффер, тоже обновим его, если id совпадает
       if (state.offer && state.offer.id === action.payload.id) {
         state.offer.isFavorite = action.payload.isFavorite;
       }
     },
     removeFavoriteOffer(state, action: PayloadAction<string>) {
-      // Удаляем оффер из избранного по id
       state.favoriteOffers = state.favoriteOffers.filter((offer) => offer.id !== action.payload);
 
-      // Обновляем is_favorite в offers, nearbyOffers и offer
-      const updateIsFavoriteFalse = (arr: (ShortOfferType | FavoriteOfferType)[]) => {
-        const offer = arr.find((o) => o.id === action.payload);
+      const updateIsFavoriteFalse = (offers: (ShortOfferType | FavoriteOfferType)[]) => {
+        const offer = offers.find((currentOffer) => currentOffer.id === action.payload);
         if (offer) {
           offer.isFavorite = false;
         }

@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../types/store';
-import { ShortOfferType, FullOfferType, FavoriteOfferType } from '../types/toffer';
-import { ReviewType } from '../types/treview';
+import { ShortOfferType, FullOfferType, FavoriteOfferType } from '../types/offer';
+import { ReviewType } from '../types/review';
 import { CommentPostType } from '../types/comment';
 import { redirectToRoute } from './actions';
 import { saveToken, dropToken } from '../services/token';
@@ -24,7 +24,6 @@ import {
 } from './slices/offers-data-slice';
 import { setError } from './slices/app-error-slice';
 
-// Очистка ошибки с таймаутом
 export const clearErrorAction = createAsyncThunk(
   'app/clearError',
   () => {
@@ -32,7 +31,6 @@ export const clearErrorAction = createAsyncThunk(
   }
 );
 
-// Загрузка всех офферов
 export const fetchOffersAction = createAsyncThunk<void, undefined, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'data/fetchOffers',
   async (_arg, { dispatch, extra: api }) => {
@@ -48,7 +46,6 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, { dispatch: A
   }
 );
 
-// Загрузка одного оффера по id
 export const fetchOfferAction = createAsyncThunk<void, string, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'data/fetchOffer',
   async (id, { dispatch, extra: api }) => {
@@ -69,7 +66,6 @@ export const fetchOfferAction = createAsyncThunk<void, string, { dispatch: AppDi
   }
 );
 
-// Загрузка офферов неподалеку
 export const fetchNearbyOffersAction = createAsyncThunk<void, string, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'data/fetchOffersNearby',
   async (id, { dispatch, extra: api }) => {
@@ -85,37 +81,37 @@ export const fetchNearbyOffersAction = createAsyncThunk<void, string, { dispatch
   }
 );
 
-// Загрузка комментариев к офферу
 export const fetchOfferCommentsAction = createAsyncThunk<void, string, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'data/fetchOfferComments',
   async (id, { dispatch, extra: api }) => {
     try {
-      dispatch(setLoadingOffer(true));
       const { data } = await api.get<ReviewType[]>(`${APIRoute.Comments}/${id}`);
       dispatch(loadOfferComments(data));
     } catch (error) {
       dispatch(setError('Не удалось загрузить комментарии'));
-    } finally {
-      dispatch(setLoadingOffer(false));
     }
   }
 );
 
-// Добавление комментария
-export const addOfferCommentAction = createAsyncThunk<void, CommentPostType, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
+export const addOfferCommentAction = createAsyncThunk<
+  ReviewType[],
+  CommentPostType,
+  { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }
+>(
   'data/addOfferComment',
   async ({ id, comment, rating }, { dispatch, extra: api }) => {
     try {
       await api.post<CommentPostType>(`${APIRoute.Comments}/${id}`, { comment, rating });
       const { data } = await api.get<ReviewType[]>(`${APIRoute.Comments}/${id}`);
       dispatch(loadOfferComments(data));
+      return data;
     } catch (error) {
       dispatch(setError('Не удалось оставить комментарий'));
+      throw error;
     }
   }
 );
 
-// Проверка авторизации пользователя
 export const checkAuthAction = createAsyncThunk<void, undefined, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'user/checkAuth',
   async (_arg, { dispatch, extra: api }) => {
@@ -130,10 +126,9 @@ export const checkAuthAction = createAsyncThunk<void, undefined, { dispatch: App
   }
 );
 
-// Логин пользователя
 export const loginAction = createAsyncThunk<void, AuthData, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'user/login',
-  async ({ login: email, password }, { dispatch, extra: api }) => {
+  async ({ email, password }, { dispatch, extra: api }) => {
     try {
       const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
 
@@ -143,21 +138,31 @@ export const loginAction = createAsyncThunk<void, AuthData, { dispatch: AppDispa
       dispatch(setEmail(data.email));
       dispatch(redirectToRoute(AppRoute.Main));
     } catch (error) {
-      dispatch(setError('Неверный логин или пароль.'));
+      dispatch(setError('Неверный логин или пароль'));
       setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
       throw error;
     }
   }
 );
 
-// Выход пользователя
-export const logoutAction = createAsyncThunk<void, undefined, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
+export const logoutAction = createAsyncThunk<
+  void,
+  { currentPath: AppRoute | string},
+  { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }
+>(
   'user/logout',
-  async (_arg, { dispatch, extra: api }) => {
+  async ({ currentPath }, { dispatch, extra: api }) => {
     try {
       await api.delete(APIRoute.Logout);
       dropToken();
       dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
+      dispatch(setEmail(null));
+
+      if (currentPath === AppRoute.Favorites.toString()) {
+        dispatch(redirectToRoute(AppRoute.Login));
+      } else {
+        dispatch(redirectToRoute(AppRoute.Main));
+      }
     } catch (error) {
       dispatch(setError('Не удалось разлогиниться'));
       setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
@@ -166,7 +171,6 @@ export const logoutAction = createAsyncThunk<void, undefined, { dispatch: AppDis
   }
 );
 
-// Загрузка избранных офферов
 export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'data/fetchFavoriteOffers',
   async (_arg, { dispatch, extra: api, getState }) => {
@@ -185,7 +189,6 @@ export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, { dis
   }
 );
 
-// Переключение избранного оффера с обновлением стейта
 export const toggleFavoriteOfferAction = createAsyncThunk<
   void,
   { offerId: string; status: boolean },
@@ -200,10 +203,10 @@ export const toggleFavoriteOfferAction = createAsyncThunk<
         return;
       }
 
-      // Отправляем запрос на сервер для обновления избранного статуса
-      const { data } = await api.post<FavoriteOfferType>(`${APIRoute.Favorite}/${offerId}/${status ? 1 : 0}`);
+      const statusNum = status ? 1 : 0;
 
-      // Обновляем состояние сразу в Redux
+      const { data } = await api.post<FavoriteOfferType>(`${APIRoute.Favorite}/${offerId}/${statusNum}`);
+
       if (status) {
         dispatch(updateFavoriteOffer(data));
       } else {

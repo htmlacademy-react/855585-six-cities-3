@@ -1,21 +1,16 @@
 import { useAppDispatch } from '../store';
-import { toggleFavoriteOfferAction, fetchOfferAction } from '../store/api-actions';
+import { toggleFavoriteOfferAction } from '../store/api-actions';
 
-export const useToggleFavorite = (refetchAfterToggle: boolean = false) => {
+export const useToggleFavorite = () => {
   const dispatch = useAppDispatch();
 
   return async (offerId: string, isFavorite: boolean): Promise<boolean> => {
     const status = !isFavorite;
 
     try {
-      await dispatch(toggleFavoriteOfferAction({ offerId, status }));
-
-      if (refetchAfterToggle) {
-        await dispatch(fetchOfferAction(offerId));
-      }
-
-      return true;
-    } catch (error) {
+      const resultAction = await dispatch(toggleFavoriteOfferAction({ offerId, status }));
+      return toggleFavoriteOfferAction.fulfilled.match(resultAction);
+    } catch {
       return false;
     }
   };

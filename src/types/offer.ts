@@ -1,17 +1,14 @@
-// Тип для локации
 export type Location = {
   latitude: number;
   longitude: number;
   zoom: number;
 };
 
-// Тип для города
 export type City = {
   name: string;
   location: Location;
 };
 
-// Базовый тип предложения с общими полями
 export type OfferBase = {
   id: string;
   title: string;
@@ -24,17 +21,14 @@ export type OfferBase = {
   rating: number;
 };
 
-// Короткий тип предложения, расширяет OfferBase и добавляет previewImage (необязательное)
 export type ShortOfferType = OfferBase & {
   previewImage?: string;
 };
 
-// Избранное предложение — как ShortOfferType, но previewImage обязательный
 export type FavoriteOfferType = OfferBase & {
   previewImage: string;
 };
 
-// Полное предложение — расширяет OfferBase и добавляет специфичные поля
 export type FullOfferType = OfferBase & {
   description: string;
   bedrooms: number;

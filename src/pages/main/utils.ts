@@ -1,4 +1,4 @@
-import { ShortOfferType } from '../../types/toffer';
+import { ShortOfferType } from '../../types/offer';
 import { sortingValues} from '../../const';
 
 export const getFilteredOffers = (offers: ShortOfferType[], activeFilter: string) => {

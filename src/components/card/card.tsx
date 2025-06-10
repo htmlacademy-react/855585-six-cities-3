@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShortOfferType } from '../../types/toffer';
+import { ShortOfferType } from '../../types/offer';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { capitalize } from '../../utils';
+import { capitalize, stylizesRating } from '../../utils';
 import { useToggleFavorite } from '../../hooks/useToggleFavorite';
 import { useAppSelector } from '../../store';
 
@@ -19,7 +19,7 @@ function CardComponent({
   onActiveCardChange,
   onActiveCardClear,
 }: CardProps): JSX.Element {
-  const { id, isPremium, previewImage, price, title, type } = offer;
+  const { id, isPremium, previewImage, price, title, type, rating } = offer;
   const toggleFavorite = useToggleFavorite();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
@@ -87,8 +87,7 @@ function CardComponent({
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            {/* Пример: ширина зависит от рейтинга */}
-            <span style={{ width: '80%' }}></span>
+            <span style={{ width: stylizesRating(rating) }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
