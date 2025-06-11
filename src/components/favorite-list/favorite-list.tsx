@@ -22,14 +22,11 @@ function FavoriteList(): JSX.Element | null {
   const hasFavorites = Object.keys(favoritesOffersByCity).length > 0;
 
   return hasFavorites && (
-    <section className="favorites">
-      <h1 className="favorites__title">Saved listing</h1>
-      <ul className="favorites__list">
-        {Object.entries(favoritesOffersByCity).map(([city, cityOffers]) => (
-          <FavoriteItem key={city} city={city} favoriteOffers={cityOffers} />
-        ))}
-      </ul>
-    </section>
+    <ul className="favorites__list">
+      {Object.entries(favoritesOffersByCity).map(([city, cityOffers]) => (
+        <FavoriteItem key={city} city={city} favoriteOffers={cityOffers} />
+      ))}
+    </ul>
   ) || null;
 }
 
