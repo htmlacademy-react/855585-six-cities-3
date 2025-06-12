@@ -1,14 +1,14 @@
+import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute, cities } from '../../const';
 import { useAppDispatch } from '../../store';
 import { setCity } from '../../store/slices/current-city-slice';
-import React, { useCallback } from 'react';
 
 type LocationsListProps = {
   activeCity: string | null;
 };
 
-function LocationsListComponent({ activeCity }: LocationsListProps) {
+const LocationsList = memo(({ activeCity }: LocationsListProps): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const handleCityClick = useCallback((city: string) => {
@@ -33,8 +33,8 @@ function LocationsListComponent({ activeCity }: LocationsListProps) {
       ))}
     </ul>
   );
-}
+});
 
-const LocationsList = React.memo(LocationsListComponent);
+LocationsList.displayName = 'LocationsList';
 
 export default LocationsList;

@@ -10,7 +10,8 @@ type FavoriteCardProps = {
 function FavoriteCard({ offer }: FavoriteCardProps): JSX.Element {
   const toggleFavorite = useToggleFavorite();
 
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     toggleFavorite(offer.id, offer.isFavorite);
   };
   return (

@@ -38,12 +38,7 @@ function Main(): JSX.Element {
 
   const handleActiveCardChange = useCallback(
     (offer: ShortOfferType | null) => {
-      setActiveOffer((prev) => {
-        if (prev?.id === offer?.id) {
-          return prev;
-        }
-        return offer;
-      });
+      setActiveOffer(offer);
     },
     []
   );

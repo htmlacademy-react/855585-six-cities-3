@@ -2,7 +2,7 @@ import Header from '../../components/header/header';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reviews from '../../components/reviews/reviews';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus, MAX_NEARBY_OFFERS, MAX_OFFER_IMAGES } from '../../const';
 import Map from '../../components/map/map';
 import { capitalize, stylizesRating } from '../../utils';
 import Card from '../../components/card/card';
@@ -51,11 +51,11 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element {
   );
 
   const capitalizedType = currentOffer?.type ? capitalize(currentOffer.type) : '';
-  const images = currentOffer?.images.slice(0, 6) ?? [];
+  const images = currentOffer?.images.slice(0, MAX_OFFER_IMAGES) ?? [];
   const goods = currentOffer?.goods ?? [];
 
   const nearbyOffersLimited = useMemo(
-    () => nearbyOffers.slice(0, 3),
+    () => nearbyOffers.slice(0, MAX_NEARBY_OFFERS),
     [nearbyOffers]
   );
 
@@ -80,7 +80,7 @@ function Offer({ authorizationStatus }: OfferProps): JSX.Element {
     return <LoadingScreen />;
   }
 
-  const mapOffers = [currentOffer, ...nearbyOffersLimited.filter((o) => o.id !== currentOffer.id)];
+  const mapOffers = [currentOffer, ...nearbyOffersLimited.filter((offer) => offer.id !== currentOffer.id)];
 
   return (
     <div className="page">

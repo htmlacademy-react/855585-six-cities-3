@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { ShortOfferType } from '../../types/offer';
 import Card from '../card/card';
 
@@ -7,7 +7,7 @@ type CardListProps = {
   onActiveCardChange: (offer: ShortOfferType | null) => void;
 };
 
-const CardListComponent = ({ offers, onActiveCardChange }: CardListProps): JSX.Element => {
+const CardList = memo(({ offers, onActiveCardChange }: CardListProps): JSX.Element => {
   const handleActiveCardChange = useCallback(
     (offer: ShortOfferType) => () => {
       onActiveCardChange(offer);
@@ -32,8 +32,8 @@ const CardListComponent = ({ offers, onActiveCardChange }: CardListProps): JSX.E
       ))}
     </div>
   );
-};
+});
 
-const CardList = React.memo(CardListComponent);
+CardList.displayName = 'CardList';
 
 export default CardList;
