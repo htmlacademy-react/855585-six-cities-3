@@ -2,6 +2,7 @@ import { FormEvent, Fragment, useState, ChangeEvent } from 'react';
 import { useAppDispatch } from '../../store';
 import { useParams } from 'react-router-dom';
 import { addOfferCommentAction, fetchOfferCommentsAction } from '../../store/api-actions';
+import { ReviewFormLength } from '../../const';
 
 function ReviewForm(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ function ReviewForm(): JSX.Element {
     if (name === 'rating') {
       setFormState((prev) => ({ ...prev, rating: Number(value) }));
     } else if (name === 'comment') {
-      if (value.length <= 300) {
+      if (value.length <= ReviewFormLength.Max) {
         setFormState((prev) => ({ ...prev, comment: value }));
       }
     }
@@ -31,8 +32,8 @@ function ReviewForm(): JSX.Element {
 
     if (
       id &&
-      formState.comment.length >= 50 &&
-      formState.comment.length <= 300 &&
+      formState.comment.length >= ReviewFormLength.Min &&
+      formState.comment.length <= ReviewFormLength.Max &&
       formState.rating > 0
     ) {
       setIsSending(true);
@@ -53,9 +54,9 @@ function ReviewForm(): JSX.Element {
   };
 
   const isSubmitDisabled =
-    formState.comment.length < 50 ||
+    formState.comment.length < ReviewFormLength.Min ||
     formState.rating === 0 ||
-    formState.comment.length >= 300 ||
+    formState.comment.length >= ReviewFormLength.Max ||
     isSending;
 
   const ratingOptions = [
@@ -74,7 +75,6 @@ function ReviewForm(): JSX.Element {
       }}
       data-testid="review-form"
     >
-
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -99,7 +99,7 @@ function ReviewForm(): JSX.Element {
               title={label}
             >
               <svg className="form__star-image" width="37" height="33">
-                <use xlinkHref="#icon-star"></use>
+                <use xlinkHref="#icon-star" />
               </svg>
             </label>
           </Fragment>
@@ -113,8 +113,8 @@ function ReviewForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formState.comment}
         onChange={handleChange}
-        minLength={50}
-        maxLength={300}
+        minLength={ReviewFormLength.Min}
+        maxLength={ReviewFormLength.Max}
         disabled={isSending}
         data-testid="comment-textarea"
       />
@@ -123,7 +123,7 @@ function ReviewForm(): JSX.Element {
         <p className="reviews__help">
           To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span> and describe your stay
-          with at least <b className="reviews__text-amount">50 characters</b> and no more than 300 characters.
+          with at least <b className="reviews__text-amount">{ReviewFormLength.Min} characters</b> and no more than {ReviewFormLength.Max} characters.
         </p>
         <button
           className="reviews__submit form__submit button"

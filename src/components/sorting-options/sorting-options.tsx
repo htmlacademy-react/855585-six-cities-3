@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { sortingValues } from '../../const';
 
 type SortingOptionsProps = {
@@ -6,7 +6,7 @@ type SortingOptionsProps = {
   onSortClick: (value: string) => void;
 };
 
-function SortingOptionsComponent({ sortValue, onSortClick }: SortingOptionsProps): JSX.Element {
+const SortingOptions = memo(({ sortValue, onSortClick }: SortingOptionsProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSortClick = useCallback((value: string) => {
@@ -57,8 +57,8 @@ function SortingOptionsComponent({ sortValue, onSortClick }: SortingOptionsProps
       </ul>
     </form>
   );
-}
+});
 
-const SortingOptions = React.memo(SortingOptionsComponent);
+SortingOptions.displayName = 'SortingOptions';
 
 export default SortingOptions;

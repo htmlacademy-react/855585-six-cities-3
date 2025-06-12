@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShortOfferType } from '../../types/offer';
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -13,12 +13,7 @@ type CardProps = {
   onActiveCardClear?: () => void;
 };
 
-function CardComponent({
-  offer,
-  block,
-  onActiveCardChange,
-  onActiveCardClear,
-}: CardProps): JSX.Element {
+const Card = memo(({ offer, block, onActiveCardChange, onActiveCardClear }: CardProps): JSX.Element => {
   const { id, isPremium, previewImage, price, title, type, rating } = offer;
   const toggleFavorite = useToggleFavorite();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
@@ -98,8 +93,8 @@ function CardComponent({
       </div>
     </article>
   );
-}
+});
 
-const Card = React.memo(CardComponent);
+Card.displayName = 'Card';
 
 export default Card;

@@ -107,6 +107,7 @@ export const addOfferCommentAction = createAsyncThunk<
       return data;
     } catch (error) {
       dispatch(setError('Не удалось оставить комментарий'));
+      setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
       throw error;
     }
   }
@@ -126,6 +127,25 @@ export const checkAuthAction = createAsyncThunk<void, undefined, { dispatch: App
   }
 );
 
+
+export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
+  'data/fetchFavoriteOffers',
+  async (_arg, { dispatch, extra: api, getState }) => {
+    try {
+      const authStatus = getState().user.authorizationStatus;
+      if (authStatus !== AuthorizationStatus.Auth) {
+        dispatch(redirectToRoute(AppRoute.Login));
+        return;
+      }
+      const { data } = await api.get<FavoriteOfferType[]>(APIRoute.Favorite);
+      dispatch(loadFavoriteOffers(data));
+    } catch (error) {
+      dispatch(setError('Не удалось загрузить избранное'));
+      setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
+    }
+  }
+);
+
 export const loginAction = createAsyncThunk<void, AuthData, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
   'user/login',
   async ({ email, password }, { dispatch, extra: api }) => {
@@ -136,6 +156,8 @@ export const loginAction = createAsyncThunk<void, AuthData, { dispatch: AppDispa
 
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
       dispatch(setEmail(data.email));
+      dispatch(fetchOffersAction());
+      dispatch(fetchFavoriteOffersAction());
       dispatch(redirectToRoute(AppRoute.Main));
     } catch (error) {
       dispatch(setError('Неверный логин или пароль'));
@@ -157,6 +179,8 @@ export const logoutAction = createAsyncThunk<
       dropToken();
       dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
       dispatch(setEmail(null));
+      dispatch(fetchOffersAction());
+
 
       if (currentPath === AppRoute.Favorites.toString()) {
         dispatch(redirectToRoute(AppRoute.Login));
@@ -167,24 +191,6 @@ export const logoutAction = createAsyncThunk<
       dispatch(setError('Не удалось разлогиниться'));
       setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
       throw error;
-    }
-  }
-);
-
-export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, { dispatch: AppDispatch; state: RootState; extra: AxiosInstance }>(
-  'data/fetchFavoriteOffers',
-  async (_arg, { dispatch, extra: api, getState }) => {
-    try {
-      const authStatus = getState().user.authorizationStatus;
-      if (authStatus !== AuthorizationStatus.Auth) {
-        dispatch(redirectToRoute(AppRoute.Login));
-        return;
-      }
-      const { data } = await api.get<FavoriteOfferType[]>(APIRoute.Favorite);
-      dispatch(loadFavoriteOffers(data));
-    } catch (error) {
-      dispatch(setError('Не удалось загрузить избранное'));
-      setTimeout(() => dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
     }
   }
 );
