@@ -158,7 +158,6 @@ export const loginAction = createAsyncThunk<void, AuthData, { dispatch: AppDispa
       dispatch(setEmail(data.email));
       dispatch(fetchOffersAction());
       dispatch(fetchFavoriteOffersAction());
-
       dispatch(redirectToRoute(AppRoute.Main));
     } catch (error) {
       dispatch(setError('Неверный логин или пароль'));
